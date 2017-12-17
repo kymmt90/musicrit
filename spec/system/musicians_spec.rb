@@ -34,4 +34,18 @@ RSpec.describe 'Musicians', type: :system do
       end
     end
   end
+
+  describe 'musician_path' do
+    before { @musician = create(:musician) }
+
+    context 'when the musician exists' do
+      it 'displays the musician' do
+        visit musician_path(@musician)
+
+        expect(page).to have_content @musician.name
+        expect(page).to have_content @musician.begun_in
+        expect(page).to have_content @musician.description
+      end
+    end
+  end
 end
