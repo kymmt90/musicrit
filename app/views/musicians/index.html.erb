@@ -1,0 +1,12 @@
+<h1>ミュージシャン</h1>
+
+<% if @musicians.size == 0 %>
+  <p>ミュージシャンが登録されていません</p>
+<% else %>
+  <dl>
+    <% @musicians.each do |musician| %>
+      <dt><%= musician.name %></dt>
+      <dd><%= musician.begun_in %> 〜</dd>
+    <% end %>
+  </dl>
+<% end %>
