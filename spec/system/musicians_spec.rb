@@ -121,6 +121,7 @@ RSpec.describe 'Musicians', type: :system do
       expect(page).to have_field '活動開始年', with: @musician_attributes[:begun_in]
       expect(page).to have_field 'バイオグラフィ', with: @musician_attributes[:description]
       expect(page).to have_button '更新する'
+      expect(page).to have_button '削除する'
     end
 
     context 'when submitting valid data' do
@@ -156,6 +157,20 @@ RSpec.describe 'Musicians', type: :system do
         expect(page).to have_field '活動開始年'
         expect(page).to have_field 'バイオグラフィ'
         expect(page).to have_button '更新する'
+        expect(page).to have_button '削除する'
+      end
+    end
+
+    context 'when destroying' do
+      it 'destroy the musician' do
+        visit edit_musician_path(@musician)
+
+        expect {
+          click_button '削除する'
+        }.to change(Musician, :count).by(-1)
+
+        expect(current_path).to eq musicians_path
+        expect(page).to have_content '削除しました'
       end
     end
   end
