@@ -5,7 +5,7 @@
 <% else %>
   <dl>
     <% @musicians.each do |musician| %>
-      <dt><%= musician.name %></dt>
+      <dt><%= link_to musician.name, musician_path(musician) %></dt>
       <dd><%= musician.begun_in %> 〜</dd>
     <% end %>
   </dl>

@@ -19,6 +19,12 @@ RSpec.describe 'Musicians', type: :system do
         expect(page).to have_content @musician.name
         expect(page).to have_content @musician.begun_in
       end
+
+      it 'shows the link to each musician' do
+        visit musicians_path
+
+        expect(page).to have_link @musician.name, href: musician_path(@musician)
+      end
     end
 
     context 'when musicians exist' do
