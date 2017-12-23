@@ -1,0 +1,11 @@
+<h1>ミュージシャンを登録</h1>
+
+<%= form_with model: @musician do |form| %>
+  <%= form.label :name, '名前' %>
+  <%= form.text_field :name %>
+  <%= form.label :begun_in, '活動開始年' %>
+  <%= form.text_field :begun_in %>
+  <%= form.label :description, 'バイオグラフィ' %>
+  <%= form.text_area :description %>
+  <%= form.submit value: '登録する' %>
+<% end %>

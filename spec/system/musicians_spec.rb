@@ -54,4 +54,15 @@ RSpec.describe 'Musicians', type: :system do
       end
     end
   end
+
+  describe 'new_musician_path' do
+    it 'shows the form' do
+      visit new_musician_path
+
+      expect(page).to have_field '名前'
+      expect(page).to have_field '活動開始年'
+      expect(page).to have_field 'バイオグラフィ'
+      expect(page).to have_button '登録する'
+    end
+  end
 end
