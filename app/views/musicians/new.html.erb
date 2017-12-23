@@ -1,6 +1,6 @@
 <h1>ミュージシャンを登録</h1>
 
-<%= form_with model: @musician do |form| %>
+<%= form_with model: @musician, local: true do |form| %>
   <%= form.label :name, '名前' %>
   <%= form.text_field :name %>
   <%= form.label :begun_in, '活動開始年' %>

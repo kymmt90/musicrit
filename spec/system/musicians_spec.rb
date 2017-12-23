@@ -64,5 +64,46 @@ RSpec.describe 'Musicians', type: :system do
       expect(page).to have_field 'バイオグラフィ'
       expect(page).to have_button '登録する'
     end
+
+    context 'when submitting valid data' do
+      before { @musician_attributes = attributes_for(:musician) }
+
+      it 'creates new musician' do
+        visit new_musician_path
+        fill_in '名前', with: @musician_attributes[:name]
+        fill_in '活動開始年', with: @musician_attributes[:begun_in]
+        fill_in 'バイオグラフィ', with: @musician_attributes[:description]
+
+        expect {
+          click_button '登録する'
+        }.to change(Musician, :count).by(1)
+
+        expect(current_path).to eq musician_path(Musician.first)
+      end
+    end
+
+    context 'when submitting invalid data' do
+      before do
+        @musician_attributes = attributes_for(:musician)
+        @musician_attributes[:begun_in] = 'XXXX'
+      end
+
+      it 're-render the form' do
+        visit new_musician_path
+        fill_in '名前', with: @musician_attributes[:name]
+        fill_in '活動開始年', with: @musician_attributes[:begun_in]
+        fill_in 'バイオグラフィ', with: @musician_attributes[:description]
+
+        expect {
+          click_button '登録する'
+        }.not_to change(Musician, :count)
+
+        expect(page).to have_http_status 422
+        expect(page).to have_field '名前'
+        expect(page).to have_field '活動開始年'
+        expect(page).to have_field 'バイオグラフィ'
+        expect(page).to have_button '登録する'
+      end
+    end
   end
 end
