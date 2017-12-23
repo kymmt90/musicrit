@@ -107,4 +107,56 @@ RSpec.describe 'Musicians', type: :system do
       end
     end
   end
+
+  describe 'edit_musician_path' do
+    before do
+      @musician = create(:musician)
+      @musician_attributes = @musician.attributes.with_indifferent_access.slice(:name, :begun_in, :description)
+    end
+
+    it 'shows the form' do
+      visit edit_musician_path(@musician)
+
+      expect(page).to have_field '名前', with: @musician_attributes[:name]
+      expect(page).to have_field '活動開始年', with: @musician_attributes[:begun_in]
+      expect(page).to have_field 'バイオグラフィ', with: @musician_attributes[:description]
+      expect(page).to have_button '更新する'
+    end
+
+    context 'when submitting valid data' do
+      before { @musician_attributes[:name] = "[UPDATE]#{@musician.name}" }
+
+      it 'updates the musician' do
+        visit edit_musician_path(@musician)
+        fill_in '名前', with: @musician_attributes[:name]
+
+        expect {
+          click_button '更新する'
+          @musician.reload
+        }.to change(@musician, :name)
+
+        expect(current_path).to eq musician_path(@musician)
+        expect(page).to have_content '更新しました'
+      end
+    end
+
+    context 'when submitting invalid data' do
+      before { @musician_attributes[:begun_in] = 'XXXX' }
+
+      it 're-render the form' do
+        visit edit_musician_path(@musician)
+        fill_in '活動開始年', with: @musician_attributes[:begun_in]
+
+        expect {
+          click_button '更新する'
+        }.not_to change(Musician, :count)
+
+        expect(page).to have_content '更新できませんでした'
+        expect(page).to have_field '名前'
+        expect(page).to have_field '活動開始年'
+        expect(page).to have_field 'バイオグラフィ'
+        expect(page).to have_button '更新する'
+      end
+    end
+  end
 end

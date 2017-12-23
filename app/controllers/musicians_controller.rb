@@ -21,6 +21,20 @@ class MusiciansController < ApplicationController
     end
   end
 
+  def edit
+    @musician = Musician.find(params[:id])
+  end
+
+  def update
+    @musician = Musician.find(params[:id])
+    if @musician.update(musician_params)
+      redirect_to @musician, notice: "#{@musician.name}を更新しました"
+    else
+      flash.now[:error] = '更新できませんでした'
+      render :edit
+    end
+  end
+
   private
 
   def musician_params

@@ -1,0 +1,19 @@
+<h1>ミュージシャンを更新</h1>
+
+<% if @musician.errors.any? %>
+  <ul>
+    <% @musician.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: @musician, method: :patch, local: true do |form| %>
+  <%= form.label :name, '名前' %>
+  <%= form.text_field :name %>
+  <%= form.label :begun_in, '活動開始年' %>
+  <%= form.text_field :begun_in %>
+  <%= form.label :description, 'バイオグラフィ' %>
+  <%= form.text_area :description %>
+  <%= form.submit value: '更新する' %>
+<% end %>
