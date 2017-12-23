@@ -1,5 +1,13 @@
 <h1>ミュージシャンを登録</h1>
 
+<% if @musician.errors.any? %>
+  <ul>
+  <% @musician.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+  </ul>
+<% end %>
+
 <%= form_with model: @musician, local: true do |form| %>
   <%= form.label :name, '名前' %>
   <%= form.text_field :name %>

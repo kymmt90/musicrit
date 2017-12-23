@@ -79,6 +79,7 @@ RSpec.describe 'Musicians', type: :system do
         }.to change(Musician, :count).by(1)
 
         expect(current_path).to eq musician_path(Musician.first)
+        expect(page).to have_content '登録しました'
       end
     end
 
@@ -98,7 +99,7 @@ RSpec.describe 'Musicians', type: :system do
           click_button '登録する'
         }.not_to change(Musician, :count)
 
-        expect(page).to have_http_status 422
+        expect(page).to have_content '登録できませんでした'
         expect(page).to have_field '名前'
         expect(page).to have_field '活動開始年'
         expect(page).to have_field 'バイオグラフィ'
