@@ -52,4 +52,15 @@ RSpec.describe Musician, type: :model do
       it { should be_invalid }
     end
   end
+
+  describe '#destroy' do
+    before do
+      @musician = create(:musician)
+      @musician.releases.create!(attributes_for(:release))
+    end
+
+    it 'destroys associated releases' do
+      expect { @musician.destroy }.to change(Release, :count).by(-1)
+    end
+  end
 end
