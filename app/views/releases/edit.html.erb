@@ -9,3 +9,7 @@
   <%= form.text_area :description %>
   <%= form.submit value: '更新する' %>
 <% end %>
+
+<%= form_with model: [@release.musician, @release], method: :delete, local: true do |form| %>
+  <%= form.submit value: '削除する' %>
+<% end %>

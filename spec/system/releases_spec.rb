@@ -125,5 +125,18 @@ RSpec.describe 'Releases', type: :system do
         expect(page).to have_button '更新する'
       end
     end
+
+    context 'when destroying' do
+      it 'destroy the release' do
+        visit edit_musician_release_path(@release.musician, @release)
+
+        expect {
+          click_button '削除する'
+        }.to change(Release, :count).by(-1)
+
+        expect(current_path).to eq musician_path(@release.musician)
+        expect(page).to have_content '削除しました'
+      end
+    end
   end
 end

@@ -1,6 +1,7 @@
 class ReleasesController < ApplicationController
+  before_action :set_release, only: [:show, :edit, :update, :destroy]
+
   def show
-    @release = Release.find(params[:id])
   end
 
   def new
@@ -19,11 +20,9 @@ class ReleasesController < ApplicationController
   end
 
   def edit
-    @release = Release.find(params[:id])
   end
 
   def update
-    @release = Release.find(params[:id])
     if @release.update(release_params)
       redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
     else
@@ -32,9 +31,19 @@ class ReleasesController < ApplicationController
     end
   end
 
+  def destroy
+    @release.destroy!
+
+    redirect_to musician_path(@release.musician), notice: "#{@release.title}を削除しました"
+  end
+
   private
 
   def release_params
     params.require(:release).permit(:title, :released_on, :description)
+  end
+
+  def set_release
+    @release = Release.find(params[:id])
   end
 end
