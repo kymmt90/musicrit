@@ -3,3 +3,16 @@
 <p><%= @musician.begun_in %> 〜</p>
 
 <p><%= @musician.description %></p>
+
+<h2>リリース</h2>
+
+<% if @musician.releases.count == 0 %>
+  <p>リリースが登録されていません</p>
+<% else %>
+  <dl>
+    <% @musician.releases.each do |release| %>
+      <dt><%= release.title %></dt>
+      <dd><%= release.released_on %></dd>
+    <% end %>
+  </dl>
+<% end %>

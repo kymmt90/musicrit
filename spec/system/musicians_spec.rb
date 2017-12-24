@@ -45,12 +45,36 @@ RSpec.describe 'Musicians', type: :system do
     before { @musician = create(:musician) }
 
     context 'when the musician exists' do
-      it 'displays the musician' do
-        visit musician_path(@musician)
+      context 'when the musician has no releases' do
+        it 'displays only the musician' do
+          visit musician_path(@musician)
 
-        expect(page).to have_content @musician.name
-        expect(page).to have_content @musician.begun_in
-        expect(page).to have_content @musician.description
+          expect(page).to have_content @musician.name
+          expect(page).to have_content @musician.begun_in
+          expect(page).to have_content @musician.description
+          expect(page).to have_content 'リリースが登録されていません'
+        end
+      end
+
+      context 'when the musician has releases' do
+        before { @first_release, @second_release = create_pair(:release, musician: @musician) }
+
+        it 'displays the musician' do
+          visit musician_path(@musician)
+
+          expect(page).to have_content @musician.name
+          expect(page).to have_content @musician.begun_in
+          expect(page).to have_content @musician.description
+        end
+
+        it 'displays releases' do
+          visit musician_path(@musician)
+
+          expect(page).to have_content @first_release.title
+          expect(page).to have_content @first_release.released_on
+          expect(page).to have_content @second_release.title
+          expect(page).to have_content @second_release.released_on
+        end
       end
     end
   end
