@@ -1,0 +1,11 @@
+<h1><%= @release.title %>を更新</h1>
+
+<%= form_with model: [@release.musician, @release], method: :patch, local: true do |form| %>
+  <%= form.label :title, 'タイトル' %>
+  <%= form.text_field :title %>
+  <%= form.label :released_on, 'リリース日' %>
+  <%= form.text_field :released_on %>
+  <%= form.label :description, '説明' %>
+  <%= form.text_area :description %>
+  <%= form.submit value: '更新する' %>
+<% end %>

@@ -3,3 +3,7 @@
 <p><%= @release.released_on %> 〜</p>
 
 <p><%= @release.description %></p>
+
+<p>
+  <%= link_to '更新する', edit_musician_release_path(@release.musician, @release) %>
+</p>

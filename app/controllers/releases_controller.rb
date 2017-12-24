@@ -18,6 +18,20 @@ class ReleasesController < ApplicationController
     end
   end
 
+  def edit
+    @release = Release.find(params[:id])
+  end
+
+  def update
+    @release = Release.find(params[:id])
+    if @release.update(release_params)
+      redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
+    else
+      flash.now[:error] = '更新できませんでした'
+      render :edit
+    end
+  end
+
   private
 
   def release_params
