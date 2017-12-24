@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Releases', type: :system do
+  describe 'musician_releases_path' do
+    before { @musician = create(:musician) }
+
+    it 'redirects to musician_path' do
+      visit musician_releases_path(@musician)
+
+      expect(current_path).to eq musician_path(@musician)
+    end
+  end
+
   describe 'musician_release_path' do
     before { @release = create(:release, musician: create(:musician)) }
 

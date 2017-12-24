@@ -1,15 +1,18 @@
 class ReleasesController < ApplicationController
+  before_action :set_musician, only: [:index, :new, :create]
   before_action :set_release, only: [:show, :edit, :update, :destroy]
+
+  def index
+    redirect_to @musician, status: :moved_permanently
+  end
 
   def show
   end
 
   def new
-    @musician = Musician.find(params[:musician_id])
   end
 
   def create
-    @musician = Musician.find(params[:musician_id])
     @release = @musician.releases.build(release_params)
     if @release.save
       redirect_to musician_release_path(@musician, @release), notice: "#{@release.title}を登録しました"
@@ -41,6 +44,10 @@ class ReleasesController < ApplicationController
 
   def release_params
     params.require(:release).permit(:title, :released_on, :description)
+  end
+
+  def set_musician
+    @musician = Musician.find(params[:musician_id])
   end
 
   def set_release
