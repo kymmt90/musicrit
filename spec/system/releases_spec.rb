@@ -14,4 +14,17 @@ RSpec.describe 'Releases', type: :system do
       end
     end
   end
+
+  describe 'new_musician_release_path' do
+    before { @musician = create(:musician) }
+
+    it 'shows the form' do
+      visit new_musician_release_path(@musician)
+
+      expect(page).to have_field 'タイトル'
+      expect(page).to have_field 'リリース日'
+      expect(page).to have_field '説明'
+      expect(page).to have_button '登録する'
+    end
+  end
 end

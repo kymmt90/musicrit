@@ -53,6 +53,7 @@ RSpec.describe 'Musicians', type: :system do
           expect(page).to have_content @musician.begun_in
           expect(page).to have_content @musician.description
           expect(page).to have_content 'リリースが登録されていません'
+          expect(page).to have_link 'リリースを登録する', href: new_musician_release_path(@musician)
         end
       end
 
@@ -65,6 +66,7 @@ RSpec.describe 'Musicians', type: :system do
           expect(page).to have_content @musician.name
           expect(page).to have_content @musician.begun_in
           expect(page).to have_content @musician.description
+          expect(page).to have_link 'リリースを登録する', href: new_musician_release_path(@musician)
         end
 
         it 'displays releases' do

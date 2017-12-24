@@ -1,0 +1,11 @@
+<h1><%= @musician.name %>のリリースを登録</h1>
+
+<%= form_with model: @release, url: new_musician_release_path(@musician), local: true do |form| %>
+  <%= form.label :title, 'タイトル' %>
+  <%= form.text_field :title %>
+  <%= form.label :released_on, 'リリース日' %>
+  <%= form.text_field :released_on %>
+  <%= form.label :description, '説明' %>
+  <%= form.text_area :description %>
+  <%= form.submit value: '登録する' %>
+<% end %>
