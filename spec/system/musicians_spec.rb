@@ -70,9 +70,9 @@ RSpec.describe 'Musicians', type: :system do
         it 'displays releases' do
           visit musician_path(@musician)
 
-          expect(page).to have_content @first_release.title
+          expect(page).to have_link @first_release.title, href: musician_release_path(@musician, @first_release)
           expect(page).to have_content @first_release.released_on
-          expect(page).to have_content @second_release.title
+          expect(page).to have_link @second_release.title, href: musician_release_path(@musician, @second_release)
           expect(page).to have_content @second_release.released_on
         end
       end

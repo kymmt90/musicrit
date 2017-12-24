@@ -11,7 +11,7 @@
 <% else %>
   <dl>
     <% @musician.releases.each do |release| %>
-      <dt><%= release.title %></dt>
+      <dt><%= link_to release.title, musician_release_path(@musician, release) %></dt>
       <dd><%= release.released_on %></dd>
     <% end %>
   </dl>
