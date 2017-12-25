@@ -24,6 +24,17 @@ RSpec.describe 'Releases', type: :system do
         expect(page).to have_link '更新する', href: edit_musician_release_path(@release.musician, @release)
       end
     end
+
+    context 'when the release has tracks' do
+      before { @track_1, @track_2 = create_pair(:track, release: @release) }
+
+      it 'displays tracks' do
+        visit musician_release_path(@release.musician, @release)
+
+        expect(page).to have_content @track_1.title
+        expect(page).to have_content @track_2.title
+      end
+    end
   end
 
   describe 'new_musician_release_path' do
