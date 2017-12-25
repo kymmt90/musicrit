@@ -67,4 +67,15 @@ RSpec.describe Release, type: :model do
       it { should be_invalid }
     end
   end
+
+  describe '#destroy' do
+    before do
+      @release = create(:release)
+      @release.tracks.create!(attributes_for(:track))
+    end
+
+    it 'destroys associated tracks' do
+      expect { @release.destroy }.to change(Track, :count).by(-1)
+    end
+  end
 end
