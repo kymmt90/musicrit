@@ -4,5 +4,6 @@ FactoryBot.define do
     title { FFaker::Music.song }
     sequence(:disc_number)
     sequence(:track_number)
+    description { FFaker::Lorem.paragraphs.join(' ') }
   end
 end

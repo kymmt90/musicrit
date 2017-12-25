@@ -6,7 +6,7 @@
 
 <ol>
   <% @release.tracks.each do |track| %>
-    <li><%= track.title %></li>
+    <li><%= link_to track.title, musician_release_track_path(@release.musician, @release, track) %></li>
   <% end %>
 </ol>
 
