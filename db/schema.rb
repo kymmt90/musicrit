@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_23_152000) do
+ActiveRecord::Schema.define(version: 2017_12_25_130056) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 2017_12_23_152000) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "albums", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", default: ""
+    t.date "released_on", null: false
+    t.integer "musician_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["musician_id", "title", "released_on"], name: "index_albums_on_musician_id_and_title_and_released_on", unique: true
+    t.index ["musician_id"], name: "index_albums_on_musician_id"
+  end
+
   create_table "musicians", force: :cascade do |t|
     t.string "name", null: false
     t.string "begun_in", null: false
@@ -50,6 +61,17 @@ ActiveRecord::Schema.define(version: 2017_12_23_152000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["musician_id", "title", "released_on"], name: "index_releases_on_musician_id_and_title_and_released_on", unique: true
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.integer "release_id"
+    t.string "title", null: false
+    t.integer "disc_number", null: false
+    t.integer "track_number", null: false
+    t.text "description", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["release_id", "track_number"], name: "index_tracks_on_release_id_and_track_number", unique: true
   end
 
 end
