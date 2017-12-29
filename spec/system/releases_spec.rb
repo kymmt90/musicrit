@@ -46,21 +46,26 @@ RSpec.describe 'Releases', type: :system do
       expect(page).to have_field 'タイトル'
       expect(page).to have_field 'リリース日'
       expect(page).to have_field '説明'
+      expect(page).to have_field '曲タイトル'
       expect(page).to have_button '登録する'
     end
 
     context 'when submitting valid data' do
-      before { @release_attributes = attributes_for(:release) }
+      before do
+        @release_attributes = attributes_for(:release)
+        @track_attributes = attributes_for(:track)
+      end
 
       it 'creates new release' do
         visit new_musician_release_path(@musician)
         fill_in 'タイトル', with: @release_attributes[:title]
         fill_in 'リリース日', with: @release_attributes[:released_on]
         fill_in '説明', with: @release_attributes[:description]
+        fill_in '曲タイトル', with: @track_attributes[:title]
 
         expect {
           click_button '登録する'
-        }.to change(Release, :count).by(1)
+        }.to change(Release, :count).by(1).and change(Track, :count).by(1)
 
         expect(current_path).to eq musician_release_path(@musician, Release.first)
         expect(page).to have_content '登録しました'
@@ -71,6 +76,7 @@ RSpec.describe 'Releases', type: :system do
       before do
         @release_attributes = attributes_for(:release)
         @release_attributes[:released_on] = 'XXXX-12-01'
+        @track_attributes = attributes_for(:track)
       end
 
       it 're-render the form' do
@@ -78,6 +84,7 @@ RSpec.describe 'Releases', type: :system do
         fill_in 'タイトル', with: @release_attributes[:title]
         fill_in 'リリース日', with: @release_attributes[:released_on]
         fill_in '説明', with: @release_attributes[:description]
+        fill_in '曲タイトル', with: @track_attributes[:title]
 
         expect {
           click_button '登録する'
@@ -87,6 +94,7 @@ RSpec.describe 'Releases', type: :system do
         expect(page).to have_field 'タイトル'
         expect(page).to have_field 'リリース日'
         expect(page).to have_field '説明'
+        expect(page).to have_field '曲タイトル'
         expect(page).to have_button '登録する'
       end
     end
@@ -95,24 +103,26 @@ RSpec.describe 'Releases', type: :system do
   describe 'edit_release_path' do
     before do
       @release = create(:release)
-      @release_attributes = @release.attributes.with_indifferent_access.slice(:title, :released_on, :description)
+      @track = create(:track, release: @release)
     end
 
     it 'shows the form' do
       visit edit_musician_release_path(@release.musician, @release)
 
-      expect(page).to have_field 'タイトル', with: @release_attributes[:title]
-      expect(page).to have_field 'リリース日', with: @release_attributes[:released_on]
-      expect(page).to have_field '説明', with: @release_attributes[:description]
+      expect(page).to have_field 'タイトル', with: @release.title
+      expect(page).to have_field 'リリース日', with: @release.released_on
+      expect(page).to have_field '説明', with: @release.description
+      expect(page).to have_field '曲タイトル', with: @track.title
       expect(page).to have_button '更新する'
     end
 
     context 'when submitting valid data' do
-      before { @release_attributes[:title] = "[UPDATE]#{@release.title}" }
+      let(:edited_title) { "[UPDATE]#{@release.title}" }
 
       it 'updates the release' do
         visit edit_musician_release_path(@release.musician, @release)
-        fill_in 'タイトル', with: @release_attributes[:title]
+        fill_in 'タイトル', with: edited_title
+        find('#release_tracks__id', visible: false).set @track.id
 
         expect {
           click_button '更新する'
@@ -125,14 +135,12 @@ RSpec.describe 'Releases', type: :system do
     end
 
     context 'when submitting invalid data' do
-      before do
-        @release_attributes = attributes_for(:release)
-        @release_attributes[:released_on] = 'XXXX-12-01'
-      end
+      let(:edited_released_on) { 'XXXX-12-01' }
 
       it 're-render the form' do
         visit edit_musician_release_path(@release.musician, @release)
-        fill_in 'リリース日', with: @release_attributes[:released_on]
+        fill_in 'リリース日', with: edited_released_on
+        find('#release_tracks__id', visible: false).set @track.id
 
         expect {
           click_button '更新する'

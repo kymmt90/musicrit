@@ -7,6 +7,9 @@
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
+  <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
+  <%= text_field_tag 'release[tracks][][title]', @release.tracks.first.title %>
+  <%= hidden_field_tag 'release[tracks][][id]', @release.tracks.first.id if @release.tracks.first %>
   <%= form.submit value: '更新する' %>
 <% end %>
 
