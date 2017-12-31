@@ -7,4 +7,28 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
+import TurbolinksAdapter from 'vue-turbolinks'
+import Vue from 'vue'
+
+Vue.use(TurbolinksAdapter)
+
+var vms = []
+
+document.addEventListener('turbolinks:load', () => {
+  vms.push(
+    new Vue({
+      el: '#hello',
+      data: {
+        message: "Can you say hello?"
+      },
+      components: { App }
+    })
+  )
+})
+
+document.addEventListener('turbolinks:visit', () => {
+  for (let vm of vms) {
+    vm.$destroy()
+  }
+  vms = []
+})
