@@ -1,13 +1,22 @@
 <h1><%= @musician.name %>のリリースを登録</h1>
 
-<%= form_with model: [@musician, Release.new], local: true do |form| %>
+<%= form_with model: [@musician, Release.new], local: true, id: 'app' do |form| %>
   <%= form.label :title, 'タイトル' %>
   <%= form.text_field :title %>
   <%= form.label :released_on, 'リリース日' %>
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
-  <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
-  <%= text_field_tag 'release[tracks][][title]' %>
+
+  <div v-for="(track, index) in tracks">
+    <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
+    <%= text_field_tag 'release[tracks][][title]', '', ':id': "`release_tracks_${index}_title`", 'v-model': 'track.title' %>
+    <%= button_tag '削除', '@click': 'removeTrack(index)', type: 'button' %>
+  </div>
+
+  <div>
+    <%= button_tag '曲を追加', type: 'button', '@click': 'addTrack' %>
+  </div>
+
   <%= form.submit value: '登録する' %>
 <% end %>

@@ -17,11 +17,21 @@ var vms = []
 document.addEventListener('turbolinks:load', () => {
   vms.push(
     new Vue({
-      el: '#hello',
+      el: '#app',
       data: {
-        message: "Can you say hello?"
+        rows: []
       },
-      components: { App }
+      methods: {
+        addRow: function() {
+          var elem = document.createElement('tr')
+          this.rows.push({
+            title: ''
+          })
+        },
+        removeElement: function(index) {
+          this.rows.splice(index, 1)
+        }
+      }
     })
   )
 })

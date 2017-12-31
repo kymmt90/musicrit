@@ -8,8 +8,12 @@
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
   <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
-  <%= text_field_tag 'release[tracks][][title]', @release.tracks.first.title %>
-  <%= hidden_field_tag 'release[tracks][][id]', @release.tracks.first.id if @release.tracks.first %>
+
+  <div v-for="(row, index) in rows">
+    <%= text_field_tag 'release[tracks][][title]', @release.tracks.take(index).title %>
+    <%= hidden_field_tag 'release[tracks][][id]', @release.tracks.take(index).id if @release.tracks.take(index) %>
+  </div>
+
   <%= form.submit value: '更新する' %>
 <% end %>
 
