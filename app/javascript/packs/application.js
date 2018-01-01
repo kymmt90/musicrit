@@ -19,17 +19,34 @@ document.addEventListener('turbolinks:load', () => {
     new Vue({
       el: '#app',
       data: {
-        rows: []
+        tracks: []
+      },
+      mounted: function() {
+        const trackField = document.getElementById('track-field')
+        if (!trackField) {
+          this.tracks.push({
+            title: '',
+            id: null
+          })
+          return
+        }
+        const model = JSON.parse(trackField.dataset.vueModel)
+        for (let track of model.tracks) {
+          this.tracks.push({
+            id: track.id,
+            title: track.title
+          })
+        }
       },
       methods: {
-        addRow: function() {
-          var elem = document.createElement('tr')
-          this.rows.push({
-            title: ''
+        addTrack: function() {
+          this.tracks.push({
+            title: '',
+            id: null
           })
         },
-        removeElement: function(index) {
-          this.rows.splice(index, 1)
+        removeTrack: function(index) {
+          this.tracks.splice(index, 1)
         }
       }
     })

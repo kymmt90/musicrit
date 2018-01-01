@@ -1,17 +1,23 @@
 <h1><%= @release.title %>を更新</h1>
 
-<%= form_with model: [@release.musician, @release], method: :patch, local: true do |form| %>
+<%= form_with model: [@release.musician, @release], method: :patch, local: true, id: 'app' do |form| %>
   <%= form.label :title, 'タイトル' %>
   <%= form.text_field :title %>
   <%= form.label :released_on, 'リリース日' %>
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
-  <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
 
-  <div v-for="(row, index) in rows">
-    <%= text_field_tag 'release[tracks][][title]', @release.tracks.take(index).title %>
-    <%= hidden_field_tag 'release[tracks][][id]', @release.tracks.take(index).id if @release.tracks.take(index) %>
+  <div id="track-field" data-vue-model="<%= { tracks: @release.tracks }.to_json %>">
+    <div v-for="(track, index) in tracks">
+      <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
+      <%= text_field_tag 'release[tracks][][title]', '', ':id': "`release_tracks_${index}_title`", 'v-model': 'track.title' %>
+      <%= hidden_field_tag 'release[tracks][][id]', '', ':id': "`release_tracks_${index}_id`", 'v-model': 'track.id' %>
+      <%= button_tag '削除', '@click': 'removeElement(index)', type: 'button' %>
+    </div>
+    <div>
+      <%= button_tag '曲を追加', type: 'button', '@click': 'addTrack' %>
+    </div>
   </div>
 
   <%= form.submit value: '更新する' %>
