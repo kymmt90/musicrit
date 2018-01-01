@@ -9,7 +9,7 @@
   <%= form.text_area :description %>
 
   <div v-for="(track, index) in tracks">
-    <%= label_tag 'release[tracks][][title]', '曲タイトル' %>
+    <%= label_tag nil, '曲タイトル', ':for': "`release_tracks_${index}_title`"  %>
     <%= text_field_tag 'release[tracks][][title]', '', ':id': "`release_tracks_${index}_title`", 'v-model': 'track.title' %>
     <%= button_tag '削除', '@click': 'removeTrack(index)', type: 'button' %>
   </div>
