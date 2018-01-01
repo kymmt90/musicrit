@@ -7,7 +7,12 @@ Rails.application.config.content_security_policy do |p|
   p.font_src    :self, :https, :data
   p.img_src     :self, :https, :data
   p.object_src  :none
-  p.script_src  :self, :https
+  if Rails.env.development? || Rails.env.test?
+    p.connect_src :self, :https, 'ws://localhost:3035', 'http://localhost:3035'
+    p.script_src :self, :https, :unsafe_eval
+  else
+    p.script_src :self, :https
+  end
   p.style_src   :self, :https, :unsafe_inline
 
   # Specify URI for violation reports

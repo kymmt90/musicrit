@@ -13,7 +13,9 @@ class ReleasesController < ApplicationController
   end
 
   def create
-    @release = @musician.releases.build(release_params)
+    @release = @musician.releases.build(release_attributes_params)
+    @release.build_tracks(track_params)
+
     if @release.save
       redirect_to musician_release_path(@musician, @release), notice: "#{@release.title}を登録しました"
     else
@@ -26,12 +28,16 @@ class ReleasesController < ApplicationController
   end
 
   def update
-    if @release.update(release_params)
-      redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
-    else
-      flash.now[:error] = '更新できませんでした'
-      render :edit
+    @release.transaction do
+      @release.update!(release_attributes_params)
+      @release.update_tracks!(track_params)
     end
+
+    redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
+
+  rescue ActiveRecord::ActiveRecordError
+    flash.now[:error] = '更新できませんでした'
+    render :edit
   end
 
   def destroy
@@ -43,7 +49,15 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :released_on, :description)
+    params.require(:release).permit(:title, :released_on, :description, tracks: [:id, :title])
+  end
+
+  def release_attributes_params
+    release_params.slice(:title, :released_on, :description)
+  end
+
+  def track_params
+    release_params.slice(:tracks)
   end
 
   def set_musician

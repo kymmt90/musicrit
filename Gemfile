@@ -11,13 +11,13 @@ gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
 gem 'sqlite3'
-gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara'
+  gem 'chromedriver-helper'
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'pry-byebug'
@@ -26,6 +26,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'foreman'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-commands-rspec'
