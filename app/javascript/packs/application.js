@@ -7,55 +7,41 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue'
 
-Vue.use(TurbolinksAdapter)
-
-var vms = []
-
-document.addEventListener('turbolinks:load', () => {
-  vms.push(
-    new Vue({
-      el: '#app',
-      data: {
-        tracks: []
-      },
-      mounted: function() {
-        const trackField = document.getElementById('track-field')
-        if (!trackField) {
-          this.tracks.push({
-            title: '',
-            id: null
-          })
-          return
-        }
-        const model = JSON.parse(trackField.dataset.vueModel)
-        for (let track of model.tracks) {
-          this.tracks.push({
-            id: track.id,
-            title: track.title
-          })
-        }
-      },
-      methods: {
-        addTrack: function() {
-          this.tracks.push({
-            title: '',
-            id: null
-          })
-        },
-        removeTrack: function(index) {
-          this.tracks.splice(index, 1)
-        }
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new Vue({
+    el: '#app',
+    data: {
+      tracks: []
+    },
+    mounted: function() {
+      const trackField = document.getElementById('track-field')
+      if (!trackField) {
+        this.tracks.push({
+          title: '',
+          id: null
+        })
+        return
       }
-    })
-  )
-})
-
-document.addEventListener('turbolinks:visit', () => {
-  for (let vm of vms) {
-    vm.$destroy()
-  }
-  vms = []
+      const model = JSON.parse(trackField.dataset.vueModel)
+      for (let track of model.tracks) {
+        this.tracks.push({
+          id: track.id,
+          title: track.title
+        })
+      }
+    },
+    methods: {
+      addTrack: function() {
+        this.tracks.push({
+          title: '',
+          id: null
+        })
+      },
+      removeTrack: function(index) {
+        this.tracks.splice(index, 1)
+      }
+    }
+  })
 })
