@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Releases', type: :system do
+RSpec.describe 'Releases', type: :system, js: true do
   describe 'musician_releases_path' do
     before { @musician = create(:musician) }
 
