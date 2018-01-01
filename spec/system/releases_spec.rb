@@ -118,11 +118,12 @@ RSpec.describe 'Releases', type: :system, js: true do
 
     context 'when submitting valid data' do
       let(:edited_title) { "[UPDATE]#{@release.title}" }
+      let(:edited_track_title) { "[UPDATE]#{@track.title}" }
 
       it 'updates the release' do
         visit edit_musician_release_path(@release.musician, @release)
         fill_in 'タイトル', with: edited_title
-        find('#release_tracks__id', visible: false).set @track.id
+        fill_in '曲タイトル', with: edited_track_title
 
         expect {
           click_button '更新する'
@@ -140,7 +141,6 @@ RSpec.describe 'Releases', type: :system, js: true do
       it 're-render the form' do
         visit edit_musician_release_path(@release.musician, @release)
         fill_in 'リリース日', with: edited_released_on
-        find('#release_tracks__id', visible: false).set @track.id
 
         expect {
           click_button '更新する'
