@@ -13,3 +13,7 @@
 <p>
   <%= link_to '更新する', edit_musician_release_path(@release.musician, @release) %>
 </p>
+
+<p>
+  <%= link_to "ミュージシャン#{@release.musician.name}のページに戻る", musician_path(@release.musician) %>
+</p>
