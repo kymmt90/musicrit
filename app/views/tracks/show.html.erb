@@ -7,3 +7,7 @@
 <p>
   <%= @track.description %>
 </p>
+
+<p>
+  <%= link_to "リリース#{@track.release.title}のページに戻る", musician_release_path(@track.release.musician, @track.release) %>
+</p>

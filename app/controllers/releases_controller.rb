@@ -10,6 +10,7 @@ class ReleasesController < ApplicationController
   end
 
   def new
+    @release = @musician.releases.new
   end
 
   def create

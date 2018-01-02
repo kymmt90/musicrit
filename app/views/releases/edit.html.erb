@@ -1,5 +1,7 @@
 <h1><%= @release.title %>を更新</h1>
 
+<%= render partial: 'layouts/errors', locals: { resource: @release } %>
+
 <%= form_with model: [@release.musician, @release], method: :patch, local: true, id: 'app' do |form| %>
   <%= form.label :title, 'タイトル' %>
   <%= form.text_field :title %>
