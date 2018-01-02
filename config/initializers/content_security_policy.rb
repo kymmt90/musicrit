@@ -13,7 +13,7 @@ Rails.application.config.content_security_policy do |p|
   else
     p.script_src :self, :https
   end
-  p.style_src   :self, :https, :unsafe_inline
+  p.style_src :self, :https, :unsafe_inline
 
   # Specify URI for violation reports
   # p.report_uri "/csp-violation-report-endpoint"
