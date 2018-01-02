@@ -1,24 +1,3 @@
-# README
+# Musics Reviews
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[![CircleCI](https://circleci.com/gh/kymmt90/music_reviews/tree/master.svg?style=svg&circle-token=e4ad43fda2b2926237e44aa331d87481dbd22c15)](https://circleci.com/gh/kymmt90/music_reviews/tree/master)
