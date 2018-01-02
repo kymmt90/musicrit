@@ -1,0 +1,132 @@
+AllCops:
+  DisabledByDefault: true
+  DisplayCopNames: true
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - vendor/**/*
+    - node_modules/**/*
+  TargetRubyVersion: 2.4
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: indent
+
+Layout/AlignHash:
+  EnforcedColonStyle: key
+  EnforcedHashRocketStyle: key
+  EnforcedLastArgumentHashStyle: always_ignore
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EmptyLines:
+  Enabled: true
+
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: true
+
+Layout/EmptyLinesAroundBlockBody:
+  EnforcedStyle: no_empty_lines
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: no_empty_lines
+
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundModuleBody:
+  EnforcedStyle: no_empty_lines
+
+Layout/ExtraSpacing:
+  Enabled: true
+
+Layout/IndentationConsistency:
+  Enabled: true
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/MultilineOperationIndentation:
+  Enabled: true
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/SpaceAfterColon:
+  Enabled: true
+
+Layout/SpaceAfterComma:
+  Enabled: true
+
+Layout/SpaceAfterMethodName:
+  Enabled: true
+
+Layout/SpaceAfterNot:
+  Enabled: true
+
+Layout/SpaceAfterSemicolon:
+  Enabled: true
+
+Layout/SpaceAroundBlockParameters:
+  Enabled: true
+
+Layout/SpaceAroundEqualsInParameterDefault:
+  Enabled: true
+
+Layout/SpaceAroundOperators:
+  Enabled: true
+
+Layout/SpaceBeforeSemicolon:
+  Enabled: true
+
+Layout/SpaceInsideBlockBraces:
+  EnforcedStyle: space
+  SpaceBeforeBlockParameters: true
+
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+
+Layout/TrailingBlankLines:
+  Enabled: true
+
+Layout/TrailingWhitespace:
+  Enabled: true
+
+Lint/Debugger:
+  Enabled: true
+
+Rails:
+  Enabled: true
+
+Rails/TimeZone:
+  EnforcedStyle: flexible
+
+Style/DefWithParentheses:
+  Enabled: true
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/Encoding:
+  Enabled: true
+
+Style/For:
+  EnforcedStyle: each
+
+Style/HashSyntax:
+  Enabled: true
+
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: true
+
+Style/MethodDefParentheses:
+  EnforcedStyle: require_parentheses
+
+Naming/MethodName:
+  EnforcedStyle: snake_case
+
+Style/StabbyLambdaParentheses:
+  EnforcedStyle: require_parentheses
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
