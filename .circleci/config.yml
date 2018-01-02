@@ -40,6 +40,9 @@ jobs:
           name: Setup database
           command: bin/rails db:create db:schema:load --trace
       - run:
+          name: Run factory_bot lint
+          command: RAILS_ENV=test bin/rails factory_bot:lint
+      - run:
           name: Run tests
           command: RAILS_ENV=test bundle exec rspec
       - store_test_results:

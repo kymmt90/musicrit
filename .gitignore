@@ -33,3 +33,5 @@
 /node_modules
 
 /vendor/bundle
+
+/spec/examples.txt
