@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: |
             sudo apt-get update
             sudo apt-get install -y libappindicator1 fonts-liberation
@@ -19,7 +19,7 @@ jobs:
             - v1-dependencies-{{ checksum "Gemfile.lock" }}
             - v1-dependencies-
       - run:
-          name: bundle install
+          name: Install gems dependencies
           command: bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
@@ -30,20 +30,23 @@ jobs:
             - rails-demo-yarn-{{ checksum "yarn.lock" }}
             - rails-demo-yarn-
       - run:
-          name: Yarn Install
+          name: Install modules dependencies
           command: yarn install --cache-folder ~/.cache/yarn
       - save_cache:
           key: rails-demo-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
-          name: database setup
+          name: Setup database
           command: bin/rails db:create db:schema:load --trace
       - run:
-          name: run tests
+          name: Run tests
           command: RAILS_ENV=test bundle exec rspec
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+      - run:
+          name: Run RuboCop
+          command: bundle exec rubocop

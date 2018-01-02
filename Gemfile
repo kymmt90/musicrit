@@ -22,6 +22,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'rubocop', require: false
   gem 'selenium-webdriver'
 end
 
