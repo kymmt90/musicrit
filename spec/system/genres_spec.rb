@@ -42,5 +42,44 @@ RSpec.describe 'Genres', type: :system do
       expect(page).to have_field '説明'
       expect(page).to have_button '登録する'
     end
+
+    context 'when submitting valid data' do
+      before { @genre_attributes = attributes_for(:genre) }
+
+      it 'creates new genre' do
+        visit new_genre_path
+        fill_in 'ジャンル名', with: @genre_attributes[:name]
+        fill_in '説明', with: @genre_attributes[:description]
+
+        expect {
+          click_button '登録する'
+        }.to change(Genre, :count).by(1)
+
+        expect(current_path).to eq genre_path(Genre.first)
+        expect(page).to have_content '登録しました'
+      end
+    end
+
+    context 'when submitting invalid data' do
+      before do
+        @genre_attributes = attributes_for(:genre)
+        @genre_attributes[:name] = ''
+      end
+
+      it 're-render the form' do
+        visit new_genre_path
+        fill_in 'ジャンル名', with: @genre_attributes[:name]
+        fill_in '説明', with: @genre_attributes[:description]
+
+        expect {
+          click_button '登録する'
+        }.not_to change(Genre, :count)
+
+        expect(page).to have_content '登録できませんでした'
+        expect(page).to have_field 'ジャンル名'
+        expect(page).to have_field '説明'
+        expect(page).to have_button '登録する'
+      end
+    end
   end
 end
