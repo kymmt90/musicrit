@@ -33,4 +33,14 @@ RSpec.describe 'Genres', type: :system do
       end
     end
   end
+
+  describe 'new_genre_path' do
+    it 'shows the form' do
+      visit new_genre_path
+
+      expect(page).to have_field 'ジャンル名'
+      expect(page).to have_field '説明'
+      expect(page).to have_button '登録する'
+    end
+  end
 end
