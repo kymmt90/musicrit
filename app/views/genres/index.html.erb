@@ -1,0 +1,11 @@
+<h1>ジャンル</h1>
+
+<% if @genres.size == 0 %>
+  <p>ジャンルが登録されていません</p>
+<% else %>
+  <dl>
+    <% @genres.each do |genre| %>
+      <dt><%= genre.name %></dt>
+    <% end %>
+  </dl>
+<% end %>
