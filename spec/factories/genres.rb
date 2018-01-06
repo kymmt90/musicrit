@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :genre do
-    name { FFaker::Music.genre }
+    sequence(:name) { |n| "#{FFaker::Music.genre}#{n}" }
     description { FFaker::Lorem.paragraphs.join(' ') }
   end
 end
