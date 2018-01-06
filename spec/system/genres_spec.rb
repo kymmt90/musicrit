@@ -82,4 +82,66 @@ RSpec.describe 'Genres', type: :system do
       end
     end
   end
+
+  describe 'edit_genre_path' do
+    before { @genre = create(:genre) }
+
+    it 'shows the form' do
+      visit edit_genre_path(@genre)
+
+      expect(page).to have_field 'ジャンル名', with: @genre.name
+      expect(page).to have_field '説明', with: @genre.description
+      expect(page).to have_button '更新する'
+    end
+
+    context 'when submitting valid data' do
+      let(:edited_name) { "[UPDATE]#{@genre.name}" }
+
+      it 'updates the genre' do
+        visit edit_genre_path(@genre)
+        fill_in 'ジャンル名', with: edited_name
+        fill_in '説明', with: @genre.description
+
+        expect {
+          click_button '更新する'
+          @genre.reload
+        }.to change(@genre, :name)
+
+        expect(current_path).to eq genre_path(@genre)
+        expect(page).to have_content '更新しました'
+      end
+    end
+
+    context 'when submitting invalid data' do
+      let(:edited_name) { '' }
+
+      it 're-render the form' do
+        visit edit_genre_path(@genre)
+        fill_in 'ジャンル名', with: edited_name
+        fill_in '説明', with: @genre.description
+
+        expect {
+          click_button '更新する'
+        }.not_to change(Genre, :name)
+
+        expect(page).to have_content '更新できませんでした'
+        expect(page).to have_field 'ジャンル名'
+        expect(page).to have_field '説明'
+        expect(page).to have_button '更新する'
+      end
+    end
+
+    context 'when destroying' do
+      it 'destroy the genre' do
+        visit edit_genre_path(@genre)
+
+        expect {
+          click_button '削除する'
+        }.to change(Genre, :count).by(-1)
+
+        expect(current_path).to eq genres_path
+        expect(page).to have_content '削除しました'
+      end
+    end
+  end
 end
