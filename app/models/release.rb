@@ -1,4 +1,5 @@
 class Release < ApplicationRecord
+  belongs_to :genre, optional: true
   belongs_to :musician
 
   has_many :tracks, dependent: :destroy

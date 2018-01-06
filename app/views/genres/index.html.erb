@@ -1,0 +1,15 @@
+<h1>ジャンル</h1>
+
+<% if @genres.size == 0 %>
+  <p>ジャンルが登録されていません</p>
+<% else %>
+  <dl>
+    <% @genres.each do |genre| %>
+      <dt><%= link_to "#{genre.name}", genre_path(genre) %></dt>
+    <% end %>
+  </dl>
+<% end %>
+
+<p>
+  <%= link_to 'ジャンルを登録する', new_genre_path %>
+</p>
