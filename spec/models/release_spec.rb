@@ -26,6 +26,15 @@ RSpec.describe Release, type: :model do
     end
   end
 
+  describe '#genre' do
+    subject { build(:release, genre: genre) }
+
+    context 'when genre is nil' do
+      let(:genre) { nil }
+      it { should be_valid }
+    end
+  end
+
   describe '#released_on' do
     subject { build(:release, released_on: released_on) }
 

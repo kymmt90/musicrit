@@ -15,6 +15,19 @@ RSpec.describe Genre, type: :model do
     end
   end
 
+  describe '#destroy' do
+    context 'when releases exists' do
+      before do
+        @genre = create(:genre)
+        @release = create(:release, genre: @genre)
+      end
+
+      it 'throws an exception' do
+        expect { @genre.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
+      end
+    end
+  end
+
   describe '#name' do
     subject { build(:genre, name: name) }
 
@@ -27,6 +40,11 @@ RSpec.describe Genre, type: :model do
       let(:name) { nil }
       it { should be_invalid }
     end
+  end
+
+  describe '#releases' do
+    before { @genre = create(:genre) }
+    it { should respond_to :releases }
   end
 
   describe 'validations' do
