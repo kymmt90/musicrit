@@ -20,4 +20,17 @@ RSpec.describe 'Genres', type: :system do
       end
     end
   end
+
+  describe 'genre_path' do
+    context 'when the genre exists' do
+      before { @genre = create(:genre) }
+
+      it 'display the genre' do
+        visit genre_path(@genre)
+
+        expect(page).to have_content @genre.name
+        expect(page).to have_content @genre.description
+      end
+    end
+  end
 end

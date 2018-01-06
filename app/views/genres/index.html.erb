@@ -5,7 +5,7 @@
 <% else %>
   <dl>
     <% @genres.each do |genre| %>
-      <dt><%= genre.name %></dt>
+      <dt><%= link_to "#{genre.name}", genre_path(genre) %></dt>
     <% end %>
   </dl>
 <% end %>
