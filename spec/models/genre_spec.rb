@@ -19,13 +19,19 @@ RSpec.describe Genre, type: :model do
     context 'when releases exists' do
       before do
         @genre = create(:genre)
-        @release = create(:release, genre: @genre)
+        @release = create(:release)
+        @release.genres << @genre
       end
 
       it 'throws an exception' do
         expect { @genre.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
       end
     end
+  end
+
+  describe '#genre_releases' do
+    subject { build_stubbed(:genre) }
+    it { should respond_to :genre_releases }
   end
 
   describe '#name' do
