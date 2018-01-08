@@ -16,7 +16,7 @@ RSpec.describe Genre, type: :model do
   end
 
   describe '#destroy' do
-    context 'when releases exists' do
+    context 'when releases exist' do
       before do
         @genre = create(:genre)
         @release = create(:release, genre: @genre)
@@ -24,6 +24,25 @@ RSpec.describe Genre, type: :model do
 
       it 'throws an exception' do
         expect { @genre.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
+      end
+    end
+
+    context 'when sub genres exist' do
+      before do
+        @genre = create(:genre)
+        @sub_genre = create(:sub_genre, genre: @genre)
+      end
+
+      it 'destroys sub genres' do
+        expect { @genre.destroy }.to change(SubGenre, :count).by(-1)
+      end
+
+      context 'when releases also exist' do
+        before { @relase = create(:release, genre: @genre) }
+
+        it 'throws an exception' do
+          expect { @genre.destroy }.to raise_error ActiveRecord::DeleteRestrictionError
+        end
       end
     end
   end
