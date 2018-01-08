@@ -19,20 +19,30 @@ RSpec.describe Release, type: :model do
     before do
       @release = create(:release)
       @release.tracks.create!(attributes_for(:track))
+      @release.genres.create!(attributes_for(:genre))
     end
 
     it 'destroys associated tracks' do
       expect { @release.destroy }.to change(Track, :count).by(-1)
     end
+
+    it 'destroys associated genre_releases' do
+      expect { @release.destroy }.to change(GenreRelease, :count).by(-1)
+    end
+
+    it 'does not destroy associated genre_releases' do
+      expect { @release.destroy }.not_to change(Genre, :count)
+    end
   end
 
-  describe '#genre' do
-    subject { build(:release, genre: genre) }
+  describe '#genres' do
+    subject { build_stubbed(:release) }
+    it { should respond_to :genres }
+  end
 
-    context 'when genre is nil' do
-      let(:genre) { nil }
-      it { should be_valid }
-    end
+  describe '#genre_releases' do
+    subject { build_stubbed(:release) }
+    it { should respond_to :genre_releases }
   end
 
   describe '#released_on' do
