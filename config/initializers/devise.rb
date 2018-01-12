@@ -273,8 +273,6 @@ Devise.setup do |config|
   #
   # The router that invoked `devise_for`, in the example above, would be:
   # config.router_name = :my_engine
-  #
-  # When using OmniAuth, Devise cannot automatically set OmniAuth path,
-  # so you need to do it manually. For the users scope, it would be:
-  # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  config.omniauth :twitter, Rails.application.credentials.dig(:twitter, :consumer_key), Rails.application.credentials.dig(:twitter, :consumer_secret)
 end
