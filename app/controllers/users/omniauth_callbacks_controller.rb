@@ -3,7 +3,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     authentication = Authentication.from_omniauth(auth_hash)
 
     if user_signed_in?
-      conenct_with(authentication)
+      connect_with(authentication)
     else
       sign_up_or_login_with(authentication)
     end
