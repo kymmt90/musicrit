@@ -274,5 +274,6 @@ Devise.setup do |config|
   # The router that invoked `devise_for`, in the example above, would be:
   # config.router_name = :my_engine
 
+  config.omniauth :facebook, Rails.application.credentials.dig(:facebook, :app_id), Rails.application.credentials.dig(:facebook, :app_secret)
   config.omniauth :twitter, Rails.application.credentials.dig(:twitter, :consumer_key), Rails.application.credentials.dig(:twitter, :consumer_secret)
 end

@@ -1,5 +1,5 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  def twitter
+  def facebook
     authentication = Authentication.from_omniauth(auth_hash)
 
     if user_signed_in?
@@ -8,6 +8,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_up_or_login_with(authentication)
     end
   end
+  alias twitter facebook
 
   private
 

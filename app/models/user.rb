@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :confirmable, :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: %i(twitter)
+         :omniauthable, omniauth_providers: %i(facebook twitter)
 
   has_many :authentications, dependent: :destroy
 
