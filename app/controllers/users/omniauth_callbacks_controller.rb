@@ -5,7 +5,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if user_signed_in?
       connect_with(authentication)
     else
-      sign_up_or_login_with(authentication)
+      sign_in_or_sign_up_with(authentication)
     end
   end
   alias twitter facebook
@@ -25,7 +25,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to root_path
   end
 
-  def sign_up_or_login_with(authentication)
+  def sign_in_or_sign_up_with(authentication)
     if authentication.user
       sign_in_and_redirect authentication.user, event: :authentication
       set_flash_message(:notice, :success, kind: authentication.provider)
