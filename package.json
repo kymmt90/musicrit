@@ -1,5 +1,5 @@
 {
-  "name": "music_reviews",
+  "name": "musicrit",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "^3.2.0",
