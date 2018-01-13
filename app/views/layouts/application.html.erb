@@ -11,7 +11,17 @@
 
   <body>
     <header>
-      <%= link_to 'ホーム', root_path %>
+      <nav>
+        <%= link_to 'ホーム', root_path %>
+        <% if user_signed_in? %>
+          <em>ログイン中</em>
+          <%= link_to 'アカウント設定', edit_user_registration_path %>
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+        <% else %>
+          <%= link_to 'アカウント登録', new_user_registration_path %>
+          <%= link_to 'ログイン', new_user_session_path %>
+        <% end %>
+      </nav>
     </header>
     <% flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: name %>
