@@ -6,10 +6,10 @@ class Authentication < ApplicationRecord
   validates :uid, presence: true, uniqueness: { scope: :provider }
 
   class << self
-    def crypt
+    def encryptor
       ActiveSupport::MessageEncryptor.new(Rails.application.credentials[:secret_encrypted_key])
     end
-    delegate :encrypt_and_sign, :decrypt_and_sign, to: :crypt
+    delegate :encrypt_and_sign, :decrypt_and_verify, to: :encryptor
 
     def from_omniauth(auth)
       auth_hash = auth.to_h
