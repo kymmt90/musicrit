@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Authentication, type: :model do
+  describe 'auth_hash' do
+    before do
+      @authentication = build(:authentication)
+      @authentication.auth_hash = auth_hash
+    end
+
+    context 'when valid auth hash' do
+      let(:auth_hash) { { provider: 'facebook', uid: '1234567' } }
+      it 'decrypts auth hash' do
+        expect(@authentication.auth_hash).to eq auth_hash
+      end
+    end
+  end
+
   describe '#encrypted_auth_hash' do
     subject { build(:authentication, encrypted_auth_hash: encrypted_auth_hash) }
 
