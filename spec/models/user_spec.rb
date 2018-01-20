@@ -16,4 +16,15 @@ RSpec.describe User, type: :model do
       expect { @user.destroy }.to change(Authentication, :count).by(-1)
     end
   end
+
+  describe '#reviews' do
+    before do
+      @user = create(:user)
+      @user.reviews << build(:review, :for_musician)
+    end
+
+    it 'destroys associated reviews' do
+      expect { @user.destroy }.to change(Review, :count).by(-1)
+    end
+  end
 end

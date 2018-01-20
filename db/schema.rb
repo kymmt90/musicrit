@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_12_151129) do
+ActiveRecord::Schema.define(version: 2018_01_20_142835) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -80,6 +80,17 @@ ActiveRecord::Schema.define(version: 2018_01_12_151129) do
     t.integer "genre_id"
     t.index ["genre_id"], name: "index_releases_on_genre_id"
     t.index ["musician_id", "title", "released_on"], name: "index_releases_on_musician_id_and_title_and_released_on", unique: true
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "body", null: false
+    t.integer "user_id"
+    t.string "reviewable_type"
+    t.integer "reviewable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable_type_and_reviewable_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "tracks", force: :cascade do |t|

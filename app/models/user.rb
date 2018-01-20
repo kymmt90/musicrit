@@ -3,6 +3,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: %i(facebook twitter)
 
   has_many :authentications, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   def self.new_with_session(params, session)
     super.tap do |user|

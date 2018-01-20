@@ -97,4 +97,15 @@ RSpec.describe Release, type: :model do
       end
     end
   end
+
+  describe '#reviews' do
+    before do
+      @release = create(:release)
+      @release.reviews << build(:review)
+    end
+
+    it 'destroys associated comments' do
+      expect { @release.destroy }.to change(Review, :count).by(-1)
+    end
+  end
 end
