@@ -63,4 +63,15 @@ RSpec.describe Musician, type: :model do
       expect { @musician.destroy }.to change(Release, :count).by(-1)
     end
   end
+
+  describe '#reviews' do
+    before do
+      @musician = create(:musician)
+      @musician.reviews << build(:review)
+    end
+
+    it 'destroys associated comments' do
+      expect { @musician.destroy }.to change(Review, :count).by(-1)
+    end
+  end
 end

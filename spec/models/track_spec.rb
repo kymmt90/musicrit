@@ -70,4 +70,15 @@ RSpec.describe Track, type: :model do
       end
     end
   end
+
+  describe '#reviews' do
+    before do
+      @track = create(:track)
+      @track.reviews << build(:review)
+    end
+
+    it 'destroys associated comments' do
+      expect { @track.destroy }.to change(Review, :count).by(-1)
+    end
+  end
 end
