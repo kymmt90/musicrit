@@ -28,5 +28,7 @@ module Musicrit
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.session_store :cache_store
   end
 end
