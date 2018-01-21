@@ -44,6 +44,18 @@ RSpec.describe User, type: :model do
       let(:name) { 'abc-123%#' }
       it { should be_invalid }
     end
+
+    context 'when the same name has already existed' do
+      before do
+        email = 'foo@example.com'
+        create(:user, email: email)
+        @user = build(:user, email: email)
+      end
+
+      specify 'each user name is unique' do
+        expect(@user).to be_invalid
+      end
+    end
   end
 
   describe '#reviews' do
