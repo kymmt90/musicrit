@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :authentications, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
+  validates :name, format: /\A[a-zA-Z_]+\z/, length: { maximum: 15 }, allow_nil: false
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if auth_hash = session['devise.omniauth_data']
