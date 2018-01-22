@@ -10,8 +10,8 @@ RSpec.describe 'Users', type: :system do
         OmniAuth.config.add_mock(:facebook, { provider: 'facebook', uid: rand(10000), info: { email: email }})
         Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:facebook]
 
-        user = create(:user, email: email, confirmed_at: Time.current)
-        sign_in user
+        @user = create(:user, email: email, confirmed_at: Time.current)
+        sign_in @user
       end
 
       it 'connects the user and Facebook authentication' do
@@ -24,6 +24,18 @@ RSpec.describe 'Users', type: :system do
 
         expect(current_path).to eq root_path
         expect(page).to have_content '連携しました'
+      end
+
+      it 'changes the user name' do
+        visit edit_user_registration_path
+        fill_in 'ユーザー名', with: 'updated'
+
+        expect {
+          click_button 'Update'
+          @user.reload
+        }.to change(@user, :name)
+
+        expect(current_path).to eq root_path
       end
     end
   end
@@ -39,6 +51,7 @@ RSpec.describe 'Users', type: :system do
       it 'creates new registration with Facebook authentication' do
         visit new_user_registration_path
         click_link 'Sign in with Facebook'
+        fill_in 'ユーザー名', with: attributes_for(:user)[:name]
 
         expect {
           click_button 'Sign up'
@@ -57,6 +70,7 @@ RSpec.describe 'Users', type: :system do
         visit new_user_registration_path
         click_link 'Sign in with Twitter'
         fill_in 'Email', with: attributes_for(:user)[:email]
+        fill_in 'ユーザー名', with: attributes_for(:user)[:name]
 
         expect {
           click_button 'Sign up'
@@ -75,6 +89,7 @@ RSpec.describe 'Users', type: :system do
 
         visit new_user_registration_path
         click_link 'Sign in with Facebook'
+        fill_in 'ユーザー名', with: attributes_for(:user)[:name]
         click_button 'Sign up'
         sign_out User.first
       end

@@ -19,4 +19,12 @@ class User < ApplicationRecord
       end
     end
   end
+
+  def update_without_current_password(params)
+    if params[:password].blank? && params[:password_confirmation].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end
+    update(params).tap { clean_up_passwords }
+  end
 end

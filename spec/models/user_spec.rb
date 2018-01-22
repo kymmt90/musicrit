@@ -47,9 +47,9 @@ RSpec.describe User, type: :model do
 
     context 'when the same name has already existed' do
       before do
-        email = 'foo@example.com'
-        create(:user, email: email)
-        @user = build(:user, email: email)
+        name = 'foo_bar'
+        create(:user, name: name)
+        @user = build(:user, name: name)
       end
 
       specify 'each user name is unique' do
