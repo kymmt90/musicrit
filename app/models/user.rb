@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :authentications, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
+  validates :name, format: /\A[a-zA-Z_]+\z/, length: { maximum: 15 }, presence: true, uniqueness: true
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if auth_hash = session['devise.omniauth_data']
@@ -16,5 +18,13 @@ class User < ApplicationRecord
         end
       end
     end
+  end
+
+  def update_without_current_password(params)
+    if params[:password].blank? && params[:password_confirmation].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end
+    update(params).tap { clean_up_passwords }
   end
 end
