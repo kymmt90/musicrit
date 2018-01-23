@@ -30,6 +30,11 @@ RSpec.describe User, type: :model do
       it { should be_invalid }
     end
 
+    context 'when all characters are allowed' do
+      let(:name) { 'abcdeFGH123456_' }
+      it { should be_valid }
+    end
+
     context 'when length is equal to 15' do
       let(:name) { 'a' * 15 }
       it { should be_valid }
@@ -40,8 +45,8 @@ RSpec.describe User, type: :model do
       it { should be_invalid }
     end
 
-    context 'when including characters others than alphabet and underscore' do
-      let(:name) { 'abc-123%#' }
+    context 'when including characters others than alphabet, numbers and underscore' do
+      let(:name) { 'abc-123' }
       it { should be_invalid }
     end
 
