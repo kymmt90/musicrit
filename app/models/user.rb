@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :authentications, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
-  validates :name, format: /\A[a-zA-Z_]+\z/, length: { maximum: 15 }, presence: true, uniqueness: true
+  validates :name, format: /\A[0-9a-zA-Z_]+\z/, length: { maximum: 15 }, presence: true, uniqueness: true
 
   def self.new_with_session(params, session)
     super.tap do |user|
