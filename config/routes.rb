@@ -11,4 +11,7 @@ Rails.application.routes.draw do
       resources :tracks, only: [:show]
     end
   end
+  resources :users, only: [] do
+    resources :reviews, only: [:index]
+  end
 end

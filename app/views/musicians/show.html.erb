@@ -20,3 +20,25 @@
 <p>
   <%= link_to 'リリースを登録する', new_musician_release_path(@musician) %>
 </p>
+
+<h2><%= @musician.name %>のレビュー</h2>
+
+<% if @musician.reviews.count == 0 %>
+  <p>レビューがありません</p>
+<% else %>
+  <% @musician.reviews.each do |review| %>
+    <article>
+      <p>
+        <em><%= link_to review.user.name, user_reviews_path(review.user) %></em><br />
+        <em><%= review.created_at.to_date %></em>
+      </p>
+      <p>
+        <%= review.body %>
+      </p>
+    </article>
+  <% end %>
+<% end %>
+
+<p>
+  <%= link_to 'レビューを書く', '#' %>
+</p>

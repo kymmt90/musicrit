@@ -47,6 +47,6 @@ class MusiciansController < ApplicationController
   end
 
   def set_musician
-    @musician = Musician.find(params[:id])
+    @musician = Musician.includes(reviews: [:user]).find(params[:id])
   end
 end

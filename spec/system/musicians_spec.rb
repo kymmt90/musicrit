@@ -54,6 +54,8 @@ RSpec.describe 'Musicians', type: :system do
           expect(page).to have_content @musician.description
           expect(page).to have_content 'リリースが登録されていません'
           expect(page).to have_link 'リリースを登録する', href: new_musician_release_path(@musician)
+          expect(page).to have_content 'レビューがありません'
+          expect(page).to have_content 'レビューを書く'
         end
       end
 
@@ -76,6 +78,19 @@ RSpec.describe 'Musicians', type: :system do
           expect(page).to have_content @first_release.released_on
           expect(page).to have_link @second_release.title, href: musician_release_path(@musician, @second_release)
           expect(page).to have_content @second_release.released_on
+        end
+      end
+
+      context 'when the musician has reviews' do
+        before { @first_review, @second_review = create_pair(:review, reviewable: @musician) }
+
+        it 'displays reviews' do
+          visit musician_path(@musician)
+
+          expect(page).to have_link @first_review.user.name, href: user_reviews_path(@first_review.user)
+          expect(page).to have_content @first_review.body
+          expect(page).to have_link @second_review.user.name, href: user_reviews_path(@second_review.user)
+          expect(page).to have_content @second_review.body
         end
       end
     end
