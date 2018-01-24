@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe 'Reviews', type: :system do
+  describe 'new_musician_review_path' do
+    before { @musician = create(:musician) }
+
+    it 'shows the form' do
+      visit new_musician_review_path(@musician)
+
+      expect(page).to have_content @musician.name
+      expect(page).to have_field 'レビュー'
+      expect(page).to have_button '公開する'
+    end
+  end
+
   describe 'user_reviews_path' do
     context 'when not user review exists' do
       before do
