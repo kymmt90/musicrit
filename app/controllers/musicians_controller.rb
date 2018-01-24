@@ -6,6 +6,9 @@ class MusiciansController < ApplicationController
   end
 
   def show
+    if current_user
+      @review = current_user.reviews.find_by(musician: @musician)
+    end
   end
 
   def new

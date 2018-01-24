@@ -40,5 +40,9 @@
 <% end %>
 
 <p>
-  <%= link_to 'レビューを書く', new_musician_review_path(@musician) %>
+  <% if @review %>
+    <%= link_to 'レビューを書く', edit_musician_review_path(@musician, @review) %>
+  <% else %>
+    <%= link_to 'レビューを書く', new_musician_review_path(@musician) %>
+  <% end %>
 </p>
