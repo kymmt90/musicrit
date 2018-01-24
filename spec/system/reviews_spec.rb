@@ -4,6 +4,16 @@ RSpec.describe 'Reviews', type: :system do
   describe 'new_musician_review_path' do
     before { @musician = create(:musician) }
 
+    context 'when not signing in' do
+      before { @user = create(:user, confirmed_at: Time.current) }
+
+      it 'redirects to the log in form' do
+        visit new_musician_review_path(@musician)
+
+        expect(current_path).to eq new_user_session_path
+      end
+    end
+
     context 'when signing in' do
       before do
         @user = create(:user, confirmed_at: Time.current)
