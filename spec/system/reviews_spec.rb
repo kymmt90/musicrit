@@ -4,12 +4,49 @@ RSpec.describe 'Reviews', type: :system do
   describe 'new_musician_review_path' do
     before { @musician = create(:musician) }
 
-    it 'shows the form' do
-      visit new_musician_review_path(@musician)
+    context 'when signing in' do
+      before do
+        @user = create(:user, confirmed_at: Time.current)
+        sign_in @user
+      end
 
-      expect(page).to have_content @musician.name
-      expect(page).to have_field 'レビュー'
-      expect(page).to have_button '公開する'
+      it 'shows the form' do
+        visit new_musician_review_path(@musician)
+
+        expect(page).to have_content @musician.name
+        expect(page).to have_field 'レビュー'
+        expect(page).to have_button '公開する'
+      end
+
+      context 'when submitting valid data' do
+        before { @review_attributes = attributes_for(:review) }
+
+        it 'creates new musician review' do
+          visit new_musician_review_path(@musician)
+          fill_in 'レビュー', with: @review_attributes[:body]
+
+          expect {
+            click_button '公開する'
+          }.to change(Review, :count).by(1)
+
+          expect(current_path).to eq musician_path(@musician)
+          expect(page).to have_content 'レビューを公開しました'
+        end
+      end
+
+      context 'when submitting invalid data' do
+        it 're-render the form' do
+          visit new_musician_review_path(@musician)
+          fill_in 'レビュー', with: ''
+
+          expect {
+            click_button '公開する'
+          }.not_to change(Review, :count)
+
+          expect(page).to have_content '公開できませんでした'
+          expect(page).to have_field 'レビュー'
+        end
+      end
     end
   end
 
