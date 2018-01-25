@@ -8,3 +8,7 @@
 
   <%= form.submit value: '更新する' %>
 <% end %>
+
+<%= form_with model: [@musician, @review], local: true, method: :delete do |form| %>
+  <%= form.submit value: '削除する' %>
+<% end %>

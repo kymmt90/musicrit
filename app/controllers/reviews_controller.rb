@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
-  before_action :set_musician, only: [:new, :create, :edit, :update]
-  before_action :set_review, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_musician, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_review, only: [:edit, :update, :destroy]
 
   def index
     @user = User.includes(reviews: [:musician]).find(params[:user_id])
@@ -33,6 +33,11 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def destroy
+    @review.destroy!
+    redirect_to musician_path(@musician), notice: "#{@musician.name}のレビューを削除しました"
+  end
+
   private
 
   def review_params
@@ -44,6 +49,6 @@ class ReviewsController < ApplicationController
   end
 
   def set_review
-    @review = @musician.reviews.find(params[:id])
+    @review = @musician&.reviews.find(params[:id])
   end
 end

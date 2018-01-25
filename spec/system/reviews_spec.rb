@@ -86,6 +86,7 @@ RSpec.describe 'Reviews', type: :system do
         expect(page).to have_content @musician.name
         expect(page).to have_field 'レビュー', with: @review.body
         expect(page).to have_button '更新する'
+        expect(page).to have_button '削除する'
       end
 
       context 'when submitting valid data' do
@@ -116,6 +117,19 @@ RSpec.describe 'Reviews', type: :system do
 
           expect(page).to have_content '更新できませんでした'
           expect(page).to have_field 'レビュー'
+        end
+      end
+
+      context 'when destroying' do
+        it 'destroys the review' do
+          visit edit_musician_review_path(@musician, @review)
+
+          expect {
+            click_button '削除する'
+          }.to change(Review, :count).by(-1)
+
+          expect(current_path).to eq musician_path(@musician)
+          expect(page).to have_content 'レビューを削除しました'
         end
       end
     end
