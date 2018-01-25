@@ -11,6 +11,28 @@
 </ol>
 
 <p>
+  <% if @release.reviews.count == 0 %>
+    <p>レビューがありません</p>
+  <% else %>
+    <% @release.reviews.each do |review| %>
+      <article>
+        <p>
+          <em><%= link_to review.user.name, user_reviews_path(review.user) %></em><br />
+          <em><%= review.created_at.to_date %></em>
+        </p>
+        <p>
+          <%= review.body %>
+        </p>
+      </article>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
+  <%= link_to 'レビューを書く', new_musician_release_review_path(@release.musician, @release) %>
+</p>
+
+<p>
   <%= link_to '更新する', edit_musician_release_path(@release.musician, @release) %>
 </p>
 

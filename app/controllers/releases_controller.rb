@@ -66,6 +66,6 @@ class ReleasesController < ApplicationController
   end
 
   def set_release
-    @release = Release.find(params[:id])
+    @release = Release.includes(reviews: :user).find(params[:id])
   end
 end

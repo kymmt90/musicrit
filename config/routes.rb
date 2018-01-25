@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :genres
   resources :musicians do
     resources :releases do
+      resources :reviews, only: [:new]
       resources :tracks, only: [:show]
     end
     resources :reviews, only: [:new, :create, :edit, :update, :destroy]
