@@ -10,5 +10,9 @@ Rails.application.routes.draw do
     resources :releases do
       resources :tracks, only: [:show]
     end
+    resources :reviews, only: [:new, :create, :edit, :update, :destroy]
+  end
+  resources :users, only: [] do
+    resources :reviews, only: [:index]
   end
 end

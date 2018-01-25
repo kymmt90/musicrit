@@ -1,0 +1,55 @@
+<h1><%= @user.name %>のレビュー</h1>
+
+<h2>ミュージシャン</h2>
+
+<% if @user.reviews.where(reviewable_type: 'Musician').empty? %>
+  <p>レビューがありません</p>
+<% else %>
+  <% @user.reviews.where(reviewable_type: 'Musician').each do |review| %>
+    <article>
+      <p>
+        <em><%= review.reviewable.name %>に対するレビュー</em><br />
+        <em><%= review.created_at.to_date %></em>
+      </p>
+      <p>
+        <%= review.body %>
+      </p>
+    </article>
+  <% end %>
+<% end %>
+
+<h2>リリース</h2>
+
+<% if @user.reviews.where(reviewable_type: 'Release').empty? %>
+  <p>レビューがありません</p>
+<% else %>
+  <% @user.reviews.where(reviewable_type: 'Release').each do |review| %>
+    <article>
+      <p>
+        <em><%= review.reviewable.name %>に対するレビュー</em><br />
+        <em><%= review.created_at.to_date %></em>
+      </p>
+      <p>
+        <%= review.body %>
+      </p>
+    </article>
+  <% end %>
+<% end %>
+
+<h2>トラック</h2>
+
+<% if @user.reviews.where(reviewable_type: 'Track').empty? %>
+  <p>レビューがありません</p>
+<% else %>
+  <% @user.reviews.where(reviewable_type: 'Track').each do |review| %>
+    <article>
+      <p>
+        <em><%= review.reviewable.name %>に対するレビュー</em><br />
+        <em><%= review.created_at.to_date %></em>
+      </p>
+      <p>
+        <%= review.body %>
+      </p>
+    </article>
+  <% end %>
+<% end %>

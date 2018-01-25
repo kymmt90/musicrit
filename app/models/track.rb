@@ -1,4 +1,6 @@
 class Track < ApplicationRecord
+  alias_attribute :name, :title
+
   belongs_to :release
 
   has_many :reviews, as: :reviewable, dependent: :destroy

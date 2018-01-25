@@ -6,6 +6,9 @@ class MusiciansController < ApplicationController
   end
 
   def show
+    if current_user
+      @review = current_user.reviews.find_by(musician: @musician)
+    end
   end
 
   def new
@@ -47,6 +50,6 @@ class MusiciansController < ApplicationController
   end
 
   def set_musician
-    @musician = Musician.find(params[:id])
+    @musician = Musician.includes(reviews: [:user]).find(params[:id])
   end
 end

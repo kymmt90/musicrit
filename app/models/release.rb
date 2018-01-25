@@ -1,4 +1,6 @@
 class Release < ApplicationRecord
+  alias_attribute :name, :title
+
   belongs_to :musician
 
   has_many :genre_releases, dependent: :destroy
