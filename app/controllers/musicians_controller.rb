@@ -7,7 +7,7 @@ class MusiciansController < ApplicationController
 
   def show
     if current_user
-      @review = current_user.reviews.find_by(musician: @musician)
+      @review = current_user.reviews.find_by(reviewable: @musician)
     end
   end
 

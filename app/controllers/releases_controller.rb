@@ -1,5 +1,5 @@
 class ReleasesController < ApplicationController
-  before_action :set_musician, only: [:index, :new, :create]
+  before_action :set_musician
   before_action :set_release, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -7,6 +7,9 @@ class ReleasesController < ApplicationController
   end
 
   def show
+    if current_user
+      @review = current_user.reviews.find_by(reviewable: @release)
+    end
   end
 
   def new
@@ -66,6 +69,6 @@ class ReleasesController < ApplicationController
   end
 
   def set_release
-    @release = Release.find(params[:id])
+    @release = @musician.releases.includes(reviews: :user).find(params[:id])
   end
 end
