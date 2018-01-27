@@ -43,6 +43,20 @@ RSpec.describe 'Releases reviews', type: :system do
           expect(page).to have_content 'レビューを公開しました'
         end
       end
+
+      context 'when submitting invalid data' do
+        it 're-render the form' do
+          visit new_musician_release_review_path(@release.musician, @release)
+          fill_in 'レビュー', with: ''
+
+          expect {
+            click_button '公開する'
+          }.not_to change(Review, :count)
+
+          expect(page).to have_content '公開できませんでした'
+          expect(page).to have_field 'レビュー'
+        end
+      end
     end
   end
 
