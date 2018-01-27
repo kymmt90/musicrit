@@ -113,6 +113,7 @@ RSpec.describe 'Musicians reviews', type: :system do
 
           expect {
             click_button '更新する'
+            @review.reload
           }.not_to change(@review, :body)
 
           expect(page).to have_content '更新できませんでした'
