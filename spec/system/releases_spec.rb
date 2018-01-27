@@ -49,6 +49,31 @@ RSpec.describe 'Releases', type: :system, js: true do
         expect(page).to have_link @second_review.user.name, href: user_reviews_path(@second_review.user)
         expect(page).to have_content @second_review.body
       end
+
+      context 'when the user is signing in' do
+        before do
+          @user = create(:user, confirmed_at: Time.current)
+          sign_in @user
+        end
+
+        context 'the user reviews do not exist' do
+          it 'shows the link to the new review page' do
+            visit musician_release_path(@release.musician, @release)
+
+            expect(page).to have_link 'レビューを書く', href: new_musician_release_review_path(@release.musician, @release)
+          end
+        end
+
+        context 'when the user reviews exist' do
+          before { @first_review.update!(user: @user) }
+
+          it 'shows the link to the review editing page' do
+            visit musician_release_path(@release.musician, @release)
+
+            expect(page).to have_link 'レビューを書く', href: edit_musician_release_review_path(@release.musician, @release, @first_review)
+          end
+        end
+      end
     end
   end
 

@@ -29,7 +29,11 @@
 </p>
 
 <p>
-  <%= link_to 'レビューを書く', new_musician_release_review_path(@release.musician, @release) %>
+  <% if @review %>
+    <%= link_to 'レビューを書く', edit_musician_release_review_path(@musician, @release, @review) %>
+  <% else %>
+    <%= link_to 'レビューを書く', new_musician_release_review_path(@musician, @release) %>
+  <% end %>
 </p>
 
 <p>

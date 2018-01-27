@@ -93,17 +93,28 @@ RSpec.describe 'Musicians', type: :system do
           expect(page).to have_content @second_review.body
         end
 
-        context 'when the signing in user reviews are exist' do
+        context 'when the user is signing in' do
           before do
             @user = create(:user, confirmed_at: Time.current)
             sign_in @user
-            @first_review.update!(user: @user)
           end
 
-          it 'shows the link to the review editing page' do
-            visit musician_path(@musician)
+          context 'the user reviews do not exist' do
+            it 'shows the link to the new review page' do
+              visit musician_path(@musician)
 
-            expect(page).to have_link 'レビューを書く', href: edit_musician_review_path(@musician, @first_review)
+              expect(page).to have_link 'レビューを書く', href: new_musician_review_path(@musician)
+            end
+          end
+
+          context 'when the user reviews exist' do
+            before { @first_review.update!(user: @user) }
+
+            it 'shows the link to the review editing page' do
+              visit musician_path(@musician)
+
+              expect(page).to have_link 'レビューを書く', href: edit_musician_review_path(@musician, @first_review)
+            end
           end
         end
       end
