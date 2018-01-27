@@ -1,11 +1,7 @@
-class ReviewsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_musician, only: [:new, :create, :edit, :update, :destroy]
+class Musicians::ReviewsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_musician
   before_action :set_review, only: [:edit, :update, :destroy]
-
-  def index
-    @user = User.includes(reviews: [:musician]).find(params[:user_id])
-  end
 
   def new
     @review = @musician.reviews.new
