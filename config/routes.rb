@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   resources :musicians do
     resources :releases do
       resources :reviews, module: :releases, only: [:new, :create, :edit, :update, :destroy]
-      resources :tracks, only: [:show]
+      resources :tracks, only: [:show] do
+        resources :reviews, module: :tracks, only: [:new, :create]
+      end
     end
     resources :reviews, module: :musicians, only: [:new, :create, :edit, :update, :destroy]
   end
