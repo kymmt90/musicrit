@@ -2,7 +2,7 @@ class Tracks::ReviewsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_musician
   before_action :set_release
-  before_action :set_review, only: [:edit, :update]
+  before_action :set_review, only: [:edit, :update, :destroy]
   before_action :set_track
 
   def new
@@ -29,6 +29,12 @@ class Tracks::ReviewsController < ApplicationController
       flash.now[:error] = '更新できませんでした'
       render :edit
     end
+  end
+
+  def destroy
+    @review.destroy!
+
+    redirect_to musician_release_track_path(@musician, @release, @track), notice: "#{@track.title}のレビューを削除しました"
   end
 
   private

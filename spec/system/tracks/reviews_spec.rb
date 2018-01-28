@@ -120,6 +120,19 @@ RSpec.describe 'Tracks reviews', type: :system do
           expect(page).to have_field 'レビュー'
         end
       end
+
+      context 'when destroying' do
+        it 'destroys the review' do
+          visit edit_musician_release_track_review_path(@musician, @release, @track, @review)
+
+          expect {
+            click_button '削除する'
+          }.to change(Review, :count).by(-1)
+
+          expect(current_path).to eq musician_release_track_path(@musician, @release, @track)
+          expect(page).to have_content 'レビューを削除しました'
+        end
+      end
     end
   end
 end
