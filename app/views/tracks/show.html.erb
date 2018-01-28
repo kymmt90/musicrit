@@ -9,5 +9,32 @@
 </p>
 
 <p>
+  <% if @track.reviews.count == 0 %>
+    <p>レビューがありません</p>
+  <% else %>
+    <% @track.reviews.each do |review| %>
+      <article>
+        <p>
+          <em><%= link_to review.user.name, user_reviews_path(review.user) %></em><br />
+          <em><%= review.created_at.to_date %></em>
+        </p>
+        <p>
+          <%= review.body %>
+        </p>
+      </article>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
+  <% if @review %>
+    <%= link_to 'レビューを書く', edit_musician_release_track_review_path(@track.release.musician, @track.release, @track, @review) %>
+  <% else %>
+    <%= link_to 'レビューを書く', new_musician_release_track_review_path(@track.release.musician, @track.release, @track) %>
+  <% end %>
+</p>
+
+
+<p>
   <%= link_to "リリース#{@track.release.title}のページに戻る", musician_release_path(@track.release.musician, @track.release) %>
 </p>

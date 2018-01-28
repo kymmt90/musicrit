@@ -1,14 +1,14 @@
-<h1><%= @release.title %>のレビューを書き直す</h1>
+<h1><%= @track.title %>のレビューを書き直す</h1>
 
 <%= render partial: 'layouts/errors', locals: { resource: @review } %>
 
-<%= form_with model: [@musician, @release, @review], local: true, method: :patch do |form| %>
+<%= form_with model: [@musician, @release, @track, @review], local: true, method: :patch do |form| %>
   <%= form.label :body, 'レビュー' %><br />
   <%= form.text_area :body %><br />
 
   <%= form.submit value: '更新する' %>
 <% end %>
 
-<%= form_with model: [@musician, @release, @review], local: true, method: :delete do |form| %>
+<%= form_with model: [@musician, @release, @track, @review], local: true, method: :delete do |form| %>
   <%= form.submit value: '削除する' %>
 <% end %>
