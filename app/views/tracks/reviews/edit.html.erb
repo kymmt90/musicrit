@@ -1,0 +1,10 @@
+<h1><%= @track.title %>のレビューを書き直す</h1>
+
+<%= render partial: 'layouts/errors', locals: { resource: @review } %>
+
+<%= form_with model: [@musician, @release, @track, @review], method: :patch, local: true do |form| %>
+  <%= form.label :body, 'レビュー' %><br />
+  <%= form.text_area :body %><br />
+
+  <%= form.submit value: '更新する' %>
+<% end %>
