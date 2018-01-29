@@ -24,6 +24,7 @@ group :development, :test do
   gem 'database_rewinder'
   gem 'factory_bot_rails'
   gem 'ffaker'
+  gem 'pg', '~> 0.21'
   gem 'pry-byebug'
   gem 'rspec-rails'
   gem 'rubocop', require: false

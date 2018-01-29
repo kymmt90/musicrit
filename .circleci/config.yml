@@ -1,9 +1,18 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/music_reviwes
+    working_directory: ~/musicrit
     docker:
-       - image: circleci/ruby:2.4.3-node-browsers
+      - image: circleci/ruby:2.4.3-node-browsers
+        environment:
+          DATABASE_URL: postgres://postgres:@127.0.0.1:5432/musicrit_test
+          RACK_ENV: test
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_DB: musicrit_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - run:
