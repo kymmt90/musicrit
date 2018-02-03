@@ -10,9 +10,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
   app: &app
     build: .
-    command: bin/rails s -b '0.0.0.0'
+    command: bash -c 'rm tmp/pids/server.pid 2>/dev/null; bin/rails s -b "0.0.0.0"'
     depends_on:
       - db
+      - webpack
     ports:
       - '3000:3000'
     stdin_open: true
@@ -28,7 +29,12 @@ services:
   webpack:
     <<: *app
     command: bin/webpack-dev-server
-    ports: []
+    depends_on: []
+    environment:
+      NODE_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    ports:
+      - '3035:3035'
 volumes:
   bundle_cache:
   node_modules_cache:
