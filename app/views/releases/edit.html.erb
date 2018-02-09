@@ -2,7 +2,7 @@
 
 <%= render partial: 'layouts/errors', locals: { resource: @release } %>
 
-<%= form_with model: [@release.musician, @release], method: :patch, local: true, id: 'app' do |form| %>
+<%= form_with model: [@release.musician, @release], method: :patch, local: true do |form| %>
   <%= form.label :title, 'タイトル' %>
   <%= form.text_field :title %>
   <%= form.label :released_on, 'リリース日' %>
