@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/musicrit
     docker:
-      - image: circleci/ruby:2.4.3-node-browsers
+      - image: circleci/ruby:2.5.0-node-browsers
         environment:
           DATABASE_URL: postgres://postgres:@127.0.0.1:5432/musicrit_test
           RACK_ENV: test

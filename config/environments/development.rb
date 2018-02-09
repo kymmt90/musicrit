@@ -68,4 +68,6 @@ Rails.application.configure do
     g.helper_specs = false
     g.routing_specs = false
   end
+
+  config.web_console.whitelisted_ips = '0.0.0.0/0'
 end

@@ -58,7 +58,12 @@ RSpec.configure do |config|
   config.before :each do |example|
     if example.metadata[:type] == :system
       if example.metadata[:js]
-        driven_by :selenium_chrome_headless, screen_size: [1400, 1400]
+        capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+          chromeOptions: {
+            args: %w(--headless --disable-gpu --no-sandbox)
+          }
+        )
+        driven_by :selenium, options: { desired_capabilities: capabilities }
       else
         driven_by :rack_test
       end

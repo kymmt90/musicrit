@@ -1,0 +1,41 @@
+version: '3'
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: postgres
+    image: postgres:10.1-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app: &app
+    build: .
+    command: bash -c 'rm tmp/pids/server.pid 2>/dev/null; bin/rails s -b "0.0.0.0"'
+    depends_on:
+      - db
+      - webpack
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+    volumes:
+      - bundle_cache:/usr/local/bundle
+      - node_modules_cache:/usr/src/app/node_modules
+      - .:/usr/src/app
+  spring:
+    <<: *app
+    command: bin/spring server
+    ports: []
+  webpack:
+    <<: *app
+    command: bin/webpack-dev-server
+    depends_on: []
+    environment:
+      NODE_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    ports:
+      - '3035:3035'
+volumes:
+  bundle_cache:
+  node_modules_cache:
+  postgres_data:
