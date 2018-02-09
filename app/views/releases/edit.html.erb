@@ -15,7 +15,7 @@
       <%= label_tag nil, '曲タイトル', ':for': "`release_tracks_${index}_title`"  %>
       <%= text_field_tag 'release[tracks][][title]', '', ':id': "`release_tracks_${index}_title`", 'v-model': 'track.title' %>
       <%= hidden_field_tag 'release[tracks][][id]', '', ':id': "`release_tracks_${index}_id`", 'v-model': 'track.id' %>
-      <%= button_tag '削除', '@click': 'removeElement(index)', type: 'button' %>
+      <%= button_tag '削除', '@click': 'removeTrack(index)', type: 'button' %>
     </div>
     <div>
       <%= button_tag '曲を追加', type: 'button', '@click': 'addTrack' %>
