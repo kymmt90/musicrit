@@ -4,6 +4,10 @@
 
 <p><%= @release.description %></p>
 
+<% if @release.cover.attached? %>
+  <p><%= image_tag @release.cover %></p>
+<% end %>
+
 <ol>
   <% @release.tracks.each do |track| %>
     <li><%= link_to track.title, musician_release_track_path(@release.musician, @release, track) %></li>

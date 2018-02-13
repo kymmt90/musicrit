@@ -53,11 +53,11 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :released_on, :description, tracks: [:id, :title])
+    params.require(:release).permit(:title, :released_on, :description, :cover, tracks: [:id, :title])
   end
 
   def release_attributes_params
-    release_params.slice(:title, :released_on, :description)
+    release_params.slice(:title, :released_on, :description, :cover)
   end
 
   def track_params
