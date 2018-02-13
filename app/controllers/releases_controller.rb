@@ -33,6 +33,7 @@ class ReleasesController < ApplicationController
 
   def update
     @release.transaction do
+      @release.cover.purge if remove_cover?
       @release.update!(release_attributes_params)
       @release.update_tracks!(track_params)
     end
@@ -70,5 +71,9 @@ class ReleasesController < ApplicationController
 
   def set_release
     @release = @musician.releases.includes(reviews: :user).find(params[:id])
+  end
+
+  def remove_cover?
+    params[:release][:remove_cover] == '1'
   end
 end

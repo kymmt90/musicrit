@@ -9,10 +9,12 @@
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
-  <%= form.label :cover, 'カバー画像' %>
   <% if @release.cover.attached? %>
     <p><%= image_tag @release.cover %></p>
+    <%= form.label :remove_cover, 'カバー画像を削除' %>
+    <%= form.check_box :remove_cover %>
   <% else %>
+    <%= form.label :cover, 'カバー画像' %>
     <%= form.file_field :cover %>
   <% end %>
 
