@@ -9,6 +9,12 @@
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
+  <%= form.label :cover, 'カバー画像' %>
+  <% if @release.cover.attached? %>
+    <p><%= image_tag @release.cover %></p>
+  <% else %>
+    <%= form.file_field :cover %>
+  <% end %>
 
   <div id="track-field" data-vue-model="<%= { tracks: @release.tracks }.to_json %>">
     <div v-for="(track, index) in tracks">
