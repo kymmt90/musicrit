@@ -33,9 +33,7 @@ class ReleasesController < ApplicationController
 
   def update
     @release.transaction do
-      @release.cover.purge if remove_cover?
-      @release.update!(release_attributes_params)
-      @release.update_tracks!(track_params)
+      @release.update_from!(release_params)
     end
 
     redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
@@ -54,7 +52,7 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :released_on, :description, :cover, tracks: [:id, :title])
+    params.require(:release).permit(:title, :released_on, :description, :cover, :remove_cover, tracks: [:id, :title])
   end
 
   def release_attributes_params
@@ -71,9 +69,5 @@ class ReleasesController < ApplicationController
 
   def set_release
     @release = @musician.releases.includes(reviews: :user).find(params[:id])
-  end
-
-  def remove_cover?
-    params[:release][:remove_cover] == '1'
   end
 end

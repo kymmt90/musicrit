@@ -20,6 +20,14 @@ class Release < ApplicationRecord
     end
   end
 
+  def update_from!(params)
+    cover.purge if remove_cover?(params)
+    update!(release_attribute_params(params))
+    update_tracks!(tracks_params(params))
+  end
+
+  private
+
   def update_tracks!(params)
     transaction do
       track_ids_to_destroy(params[:tracks]).each { |id| tracks.find(id).destroy! }
@@ -34,7 +42,17 @@ class Release < ApplicationRecord
     end
   end
 
-  private
+  def release_attribute_params(params)
+    params.slice(:title, :released_on, :description, :cover)
+  end
+
+  def remove_cover?(params)
+    params[:remove_cover] == '1'
+  end
+
+  def tracks_params(params)
+    params.slice(:tracks)
+  end
 
   def track_ids_to_destroy(tracks_params)
     tracks.map(&:id) - tracks_params.map { |t| t[:id].to_i }
