@@ -33,8 +33,7 @@ class ReleasesController < ApplicationController
 
   def update
     @release.transaction do
-      @release.update!(release_attributes_params)
-      @release.update_tracks!(track_params)
+      @release.update_from!(release_params)
     end
 
     redirect_to musician_release_path(@release.musician, @release), notice: "#{@release.title}を更新しました"
@@ -53,11 +52,11 @@ class ReleasesController < ApplicationController
   private
 
   def release_params
-    params.require(:release).permit(:title, :released_on, :description, tracks: [:id, :title])
+    params.require(:release).permit(:title, :released_on, :description, :cover, :remove_cover, tracks: [:id, :title])
   end
 
   def release_attributes_params
-    release_params.slice(:title, :released_on, :description)
+    release_params.slice(:title, :released_on, :description, :cover)
   end
 
   def track_params

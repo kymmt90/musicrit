@@ -25,6 +25,22 @@ RSpec.describe 'Releases', type: :system, js: true do
         expect(page).to have_link 'レビューを書く', href: new_musician_release_review_path(@release.musician, @release)
         expect(page).to have_link '更新する', href: edit_musician_release_path(@release.musician, @release)
       end
+
+      context 'when a cover image is attached' do
+        before { @release.cover.attach(io: File.open(Rails.root.join('spec', 'support', 'test.jpg')), filename: 'test.jpg', content_type: 'image/jpg') }
+
+        it 'display the release with the cover image' do
+          visit musician_release_path(@release.musician, @release)
+
+          expect(page).to have_content @release.title
+          expect(page).to have_content @release.released_on
+          expect(page).to have_content @release.description
+          expect(page).to have_selector 'img'
+          expect(page).to have_content 'レビューがありません'
+          expect(page).to have_link 'レビューを書く', href: new_musician_release_review_path(@release.musician, @release)
+          expect(page).to have_link '更新する', href: edit_musician_release_path(@release.musician, @release)
+        end
+      end
     end
 
     context 'when the release has tracks' do
@@ -86,6 +102,7 @@ RSpec.describe 'Releases', type: :system, js: true do
       expect(page).to have_field 'タイトル'
       expect(page).to have_field 'リリース日'
       expect(page).to have_field '説明'
+      expect(page).to have_field 'カバー画像'
       expect(page).to have_field '曲タイトル'
       expect(page).to have_button '登録する'
     end
@@ -102,6 +119,7 @@ RSpec.describe 'Releases', type: :system, js: true do
         fill_in 'リリース日', with: @release_attributes[:released_on]
         fill_in '説明', with: @release_attributes[:description]
         fill_in '曲タイトル', with: @track_attributes[:title]
+        attach_file 'カバー画像', Rails.root.join('spec', 'support', 'test.jpg')
 
         expect {
           click_button '登録する'
@@ -152,6 +170,7 @@ RSpec.describe 'Releases', type: :system, js: true do
       expect(page).to have_field 'タイトル', with: @release.title
       expect(page).to have_field 'リリース日', with: @release.released_on
       expect(page).to have_field '説明', with: @release.description
+      expect(page).to have_field 'カバー画像'
       expect(page).to have_field '曲タイトル', with: @track.title
       expect(page).to have_button '更新する'
     end
@@ -160,18 +179,48 @@ RSpec.describe 'Releases', type: :system, js: true do
       let(:edited_title) { "[UPDATE]#{@release.title}" }
       let(:edited_track_title) { "[UPDATE]#{@track.title}" }
 
-      it 'updates the release' do
-        visit edit_musician_release_path(@release.musician, @release)
-        fill_in 'タイトル', with: edited_title
-        fill_in '曲タイトル', with: edited_track_title
+      context 'when any cover image has not attached yet' do
+        it 'updates the release' do
+          visit edit_musician_release_path(@release.musician, @release)
+          fill_in 'タイトル', with: edited_title
+          fill_in '曲タイトル', with: edited_track_title
+          attach_file 'カバー画像', Rails.root.join('spec', 'support', 'test.jpg')
 
-        expect {
-          click_button '更新する'
-          @release.reload
-        }.to change(@release, :title)
+          expect {
+            click_button '更新する'
+            @release.reload
+          }.to change(@release, :title)
 
-        expect(current_path).to eq musician_release_path(@release.musician, @release)
-        expect(page).to have_content '更新しました'
+          expect(current_path).to eq musician_release_path(@release.musician, @release)
+          expect(page).to have_content '更新しました'
+          expect(page).to have_selector 'img'
+        end
+      end
+
+      context 'when a cover image has already been attached' do
+        before { @release.cover.attach(io: File.open(Rails.root.join('spec', 'support', 'test.jpg')), filename: 'test.jpg', content_type: 'image/jpg') }
+
+        it 'shows the form with the image delete check box' do
+          visit edit_musician_release_path(@release.musician, @release)
+
+          expect(page).to have_unchecked_field 'カバー画像を削除'
+        end
+
+        it 'updates the release' do
+          visit edit_musician_release_path(@release.musician, @release)
+          fill_in 'タイトル', with: edited_title
+          fill_in '曲タイトル', with: edited_track_title
+          check 'カバー画像を削除'
+
+          expect {
+            click_button '更新する'
+            @release.reload
+          }.to change(@release, :title)
+
+          expect(current_path).to eq musician_release_path(@release.musician, @release)
+          expect(page).to have_content '更新しました'
+          expect(page).not_to have_selector 'img'
+        end
       end
     end
 

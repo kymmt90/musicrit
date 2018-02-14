@@ -9,6 +9,8 @@
   <%= form.text_field :released_on %>
   <%= form.label :description, '説明' %>
   <%= form.text_area :description %>
+  <%= form.label :cover, 'カバー画像' %>
+  <%= form.file_field :cover %>
 
   <div v-for="(track, index) in tracks">
     <%= label_tag nil, '曲タイトル', ':for': "`release_tracks_${index}_title`"  %>
