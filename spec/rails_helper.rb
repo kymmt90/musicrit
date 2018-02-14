@@ -69,4 +69,12 @@ RSpec.configure do |config|
       end
     end
   end
+
+  config.after :each do |example|
+    if example.metadata[:type] == :system
+      if example.metadata[:js]
+        FileUtils.rm_rf(Rails.root.join('tmp', 'storage'))
+      end
+    end
+  end
 end
