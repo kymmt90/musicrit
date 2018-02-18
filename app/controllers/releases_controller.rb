@@ -18,7 +18,7 @@ class ReleasesController < ApplicationController
 
   def create
     @release = @musician.releases.build(release_attributes_params)
-    @release.build_tracks(track_params)
+    @release.tracks.build_with_track_numbers(track_params)
 
     if @release.save
       redirect_to musician_release_path(@musician, @release), notice: "#{@release.title}を登録しました"
