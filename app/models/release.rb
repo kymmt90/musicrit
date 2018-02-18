@@ -5,7 +5,13 @@ class Release < ApplicationRecord
 
   has_many :genre_releases, dependent: :destroy
   has_many :genres, through: :genre_releases
-  has_many :tracks, dependent: :destroy
+  has_many :tracks, dependent: :destroy do
+    def build_with_track_numbers(params)
+      params[:tracks].each_with_index do |param, index|
+        build(title: param[:title], disc_number: 1, track_number: index + 1, release: proxy_association.owner)
+      end
+    end
+  end
   has_many :reviews, as: :reviewable, dependent: :destroy
 
   has_one_attached :cover
@@ -13,12 +19,6 @@ class Release < ApplicationRecord
   validates :description, length: { minimum: 0, allow_nil: false }
   validates :released_on, format: { with: /\A[1-9]\d{0,3}-\d\d-\d\d\z/ }, presence: true
   validates :title, presence: true, uniqueness: { scope: [:musician, :released_on] }
-
-  def build_tracks(params)
-    params[:tracks].each_with_index do |param, index|
-      tracks.build(title: param[:title], disc_number: 1, track_number: index + 1)
-    end
-  end
 
   def update_from!(params)
     cover.purge if remove_cover?(params)
