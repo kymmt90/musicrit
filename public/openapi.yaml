@@ -1,0 +1,519 @@
+openapi: 3.0.1
+info:
+  title: Musicrit Web API
+  version: 0.1.0
+paths:
+  /musicians:
+    get:
+      description: |
+        Musicritに登録されているすべてのミュージシャンのリストを取得します。
+      responses:
+        '200':
+          description: Musicritに登録されているすべてのミュージシャン
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/musician'
+    post:
+      requestBody:
+        description: 登録するミュージシャン
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/musicianInput'
+        required: true
+      responses:
+        '201':
+          description: 登録したミュージシャン
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/musician'
+  /musicians/{musicianId}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+      responses:
+        '200':
+          description: IDで指定したミュージシャン
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/musician'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/musicianInput'
+      responses:
+        '200':
+          description: 更新したミュージシャン
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/musician'
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+      responses:
+        '204':
+          description: IDで指定したミュージシャンの削除に成功
+  /musicians/{musicianId}/releases:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+      responses:
+        '200':
+          description: IDで指定したミュージシャンのすべてのリリース
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/release'
+    post:
+      requestBody:
+        description: 登録するリリース
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/releaseInput'
+        required: true
+      responses:
+        '201':
+          description: 登録したリリース
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/release'
+  /musicians/{musicianId}/reviews:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+      responses:
+        '200':
+          description: IDで指定したミュージシャンに対して投稿されたすべてのレビュー
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/review'
+    post:
+      requestBody:
+        description: 投稿するレビュー
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+        required: true
+      responses:
+        '201':
+          description: 投稿したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+  /musicians/{musicianId}/reviews/{reviewId}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '200':
+          description: IDで指定したミュージシャンに対して投稿されたIDで指定したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+        - $ref: '#/components/parameters/reviewId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+      responses:
+        '200':
+          description: 更新したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/musicianId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '204':
+          description: IDで指定したレビューの削除に成功
+  /releases:
+    get:
+      description: Musicritに登録されているすべてのリリースのリストを取得します。
+      responses:
+        '200':
+          description: Musicritに登録されているすべてのリリース
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/release'
+  /releases/{releaseId}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+      responses:
+        '200':
+          description: IDで指定したリリース
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/release'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/releaseInput'
+      responses:
+        '200':
+          description: 更新したリリース
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/release'
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+      responses:
+        '204':
+          description: IDで指定したリリースの削除に成功
+  /releases/{releaseId}/reviews:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+      responses:
+        '200':
+          description: IDで指定したリリースに対して投稿されたすべてのレビュー
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/review'
+    post:
+      requestBody:
+        description: 投稿するレビュー
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+        required: true
+      responses:
+        '201':
+          description: 投稿したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+  /releases/{releaseId}/reviews/{reviewId}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '200':
+          description: IDで指定したリリースに対して投稿されたIDで指定したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/reviewId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+      responses:
+        '200':
+          description: 更新したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '204':
+          description: IDで指定したレビューの削除に成功
+  /releases/{releaseId}/tracks:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+      responses:
+        '200':
+          description: IDで指定したリリースが含むすべてのトラック
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/track'
+  /releases/{releaseId}/tracks/{trackID}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+      responses:
+        '200':
+          description: IDで指定したリリースが含むIDで指定したトラック
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/track'
+  /releases/{releaseId}/tracks/{trackID}/reviews:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+      responses:
+        '200':
+          description: IDで指定したリリースが含むIDで指定したトラックに対して投稿されたすべてのレビュー
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/review'
+    post:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+      requestBody:
+        description: 投稿するレビュー
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+        required: true
+      responses:
+        '201':
+          description: 投稿したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+  /releases/{releaseId}/tracks/{trackID}/reviews/{reviewId}:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '200':
+          description: IDで指定したリリースが含むIDで指定したトラックに対して投稿されたIDで指定したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+        - $ref: '#/components/parameters/reviewId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reviewInput'
+      responses:
+        '200':
+          description: 更新したレビュー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/releaseId'
+        - $ref: '#/components/parameters/trackId'
+        - $ref: '#/components/parameters/reviewId'
+      responses:
+        '204':
+          description: IDで指定したレビューの削除に成功
+  /users/{userId}/reviews:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: IDで指定したユーザーが書いたすべてのレビュー
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/review'
+components:
+  parameters:
+    musicianId:
+      name: musicianId
+      in: path
+      description: ミュージシャンのID
+      required: true
+      schema:
+        type: integer
+    releaseId:
+      name: releaseId
+      in: path
+      description: リリースのID
+      required: true
+      schema:
+        type: integer
+    reviewId:
+      name: reviewID
+      in: path
+      description: レビューのID
+      required: true
+      schema:
+        type: integer
+    trackId:
+      name: trackID
+      in: path
+      description: トラックのID
+      required: true
+      schema:
+        type: integer
+    userId:
+      name: userID
+      in: path
+      description: ユーザーのID
+      required: true
+      schema:
+        type: integer
+  schemas:
+    musician:
+      description: ミュージシャン
+      type: object
+      properties:
+        name:
+          description: 名前
+          type: string
+        begun_in:
+          description: 活動を始めた年
+          type: string
+        description:
+          description: 説明
+          type: string
+    musicianInput:
+      type: object
+      properties:
+        name:
+          description: 名前
+          type: string
+        begun_in:
+          description: 活動を始めた年
+          type: string
+        description:
+          description: 説明
+          type: string
+      required:
+        - name
+        - begun_in
+    release:
+      description: リリース
+      type: object
+      properties:
+        id:
+          description: ID
+          type: integer
+        title:
+          description: タイトル
+          type: string
+        released_on:
+          description: |
+            リリース年月日。`YYYY-MM-DD`形式とする。日が不明の場合は`YYYY-MM-00`, 月日が不明の場合は`YYYY-00-00`とする
+          type: string
+        description:
+          description: 説明
+          type: string
+        cover:
+          description: リリースのカバー画像へのURL
+          type: string
+        tracks:
+          description: リリースが含むトラック
+          type: array
+          items:
+            $ref: '#/components/schemas/track'
+    releaseInput:
+      description: リリース
+      type: object
+      properties:
+        title:
+          description: タイトル
+          type: string
+        released_on:
+          description: |
+            リリース年月日。`YYYY-MM-DD`形式とする。日が不明の場合は`YYYY-MM-00`, 月日が不明の場合は`YYYY-00-00`とする
+          type: string
+        description:
+          description: 説明
+          type: string
+        cover:
+          description: リリースのカバー画像へのURL
+          type: string
+        tracks:
+          description: リリースが含むトラック
+          type: array
+          items:
+            $ref: '#/components/schemas/track'
+      required:
+        - title
+        - released_on
+    review:
+      description: レビュー
+      type: object
+      properties:
+        id:
+          description: ID
+          type: integer
+        body:
+          description: 本文
+          type: string
+        target:
+          description: レビュー対象
+          type: string
+    reviewInput:
+      description: レビュー
+      type: object
+      properties:
+        body:
+          description: 本文
+          type: string
+      required:
+        - body
+    track:
+      description: トラック
+      type: object
+      properties:
+        id:
+          description: ID
+          type: integer
+        title:
+          description: タイトル
+          type: string
