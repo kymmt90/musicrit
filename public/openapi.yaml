@@ -22,7 +22,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/musicianInput'
+              $ref: '#/components/schemas/newMusician'
         required: true
       responses:
         '201':
@@ -49,7 +49,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/musicianInput'
+              $ref: '#/components/schemas/newMusician'
       responses:
         '200':
           description: 更新したミュージシャン
@@ -82,7 +82,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/releaseInput'
+              $ref: '#/components/schemas/newRelease'
         required: true
       responses:
         '201':
@@ -110,7 +110,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
         required: true
       responses:
         '201':
@@ -139,7 +139,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
       responses:
         '200':
           description: 更新したレビュー
@@ -184,7 +184,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/releaseInput'
+              $ref: '#/components/schemas/newRelease'
       responses:
         '200':
           description: 更新したリリース
@@ -217,7 +217,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
         required: true
       responses:
         '201':
@@ -246,7 +246,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
       responses:
         '200':
           description: 更新したレビュー
@@ -309,7 +309,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
         required: true
       responses:
         '201':
@@ -340,7 +340,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reviewInput'
+              $ref: '#/components/schemas/newReview'
       responses:
         '200':
           description: 更新したレビュー
@@ -408,19 +408,16 @@ components:
         type: integer
   schemas:
     musician:
+      allOf:
+        - $ref: '#/components/schemas/newMusician'
+        - properties:
+            id:
+              description: ID
+              type: integer
+          required:
+            - id
+    newMusician:
       description: ミュージシャン
-      type: object
-      properties:
-        name:
-          description: 名前
-          type: string
-        begun_in:
-          description: 活動を始めた年
-          type: string
-        description:
-          description: 説明
-          type: string
-    musicianInput:
       type: object
       properties:
         name:
@@ -436,31 +433,15 @@ components:
         - name
         - begun_in
     release:
-      description: リリース
-      type: object
-      properties:
-        id:
-          description: ID
-          type: integer
-        title:
-          description: タイトル
-          type: string
-        released_on:
-          description: |
-            リリース年月日。`YYYY-MM-DD`形式とする。日が不明の場合は`YYYY-MM-00`, 月日が不明の場合は`YYYY-00-00`とする
-          type: string
-        description:
-          description: 説明
-          type: string
-        cover:
-          description: リリースのカバー画像へのURL
-          type: string
-        tracks:
-          description: リリースが含むトラック
-          type: array
-          items:
-            $ref: '#/components/schemas/track'
-    releaseInput:
+      allOf:
+        - $ref: '#/components/schemas/newRelease'
+        - properties:
+            id:
+              description: ID
+              type: integer
+          required:
+            - id
+    newRelease:
       description: リリース
       type: object
       properties:
@@ -486,19 +467,15 @@ components:
         - title
         - released_on
     review:
-      description: レビュー
-      type: object
-      properties:
-        id:
-          description: ID
-          type: integer
-        body:
-          description: 本文
-          type: string
-        target:
-          description: レビュー対象
-          type: string
-    reviewInput:
+      allOf:
+        - $ref: '#/components/schemas/newReview'
+        - properties:
+            id:
+              description: ID
+              type: integer
+          required:
+            - id
+    newReview:
       description: レビュー
       type: object
       properties:
@@ -517,3 +494,6 @@ components:
         title:
           description: タイトル
           type: string
+      required:
+        - id
+        - title
