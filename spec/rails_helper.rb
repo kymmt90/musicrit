@@ -77,4 +77,6 @@ RSpec.configure do |config|
       end
     end
   end
+
+  config.include RSpec::JsonMatcher
 end
