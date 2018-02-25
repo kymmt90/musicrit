@@ -3,6 +3,11 @@ class MusiciansController < ApplicationController
 
   def index
     @musicians = Musician.all
+
+    respond_to do |format|
+      format.html
+      format.v1_json { render formats: :json }
+    end
   end
 
   def show
