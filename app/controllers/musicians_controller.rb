@@ -14,6 +14,11 @@ class MusiciansController < ApplicationController
     if current_user
       @review = current_user.reviews.find_by(reviewable: @musician)
     end
+
+    respond_to do |format|
+      format.html
+      format.v1_json { render formats: :json }
+    end
   end
 
   def new
