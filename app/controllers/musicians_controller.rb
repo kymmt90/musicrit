@@ -40,9 +40,7 @@ class MusiciansController < ApplicationController
           render :new
         }
 
-        format.v1_json {
-          render json: { errors: @musician.errors.full_messages }, status: :unprocessable_entity
-        }
+        format.v1_json { render_invalid_parameters_error(@musician) }
       end
     end
   end
@@ -52,10 +50,19 @@ class MusiciansController < ApplicationController
 
   def update
     if @musician.update(musician_params)
-      redirect_to @musician, notice: "#{@musician.name}を更新しました"
+      respond_to do |format|
+        format.html { redirect_to @musician, notice: "#{@musician.name}を更新しました" }
+        format.v1_json { render :show, formats: :json }
+      end
     else
-      flash.now[:error] = '更新できませんでした'
-      render :edit
+      respond_to do |format|
+        format.html {
+          flash.now[:error] = '更新できませんでした'
+          render :edit
+        }
+
+        format.v1_json { render_invalid_parameters_error(@musician) }
+      end
     end
   end
 
@@ -73,5 +80,9 @@ class MusiciansController < ApplicationController
 
   def set_musician
     @musician = Musician.includes(reviews: [:user]).find(params[:id])
+  end
+
+  def render_invalid_parameters_error(object)
+    render json: { errors: object.errors.full_messages }, status: :unprocessable_entity
   end
 end

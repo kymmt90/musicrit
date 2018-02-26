@@ -112,4 +112,58 @@ RSpec.describe 'Musicians API', type: :request do
       end
     end
   end
+
+  describe 'PATCH /musicians/:id' do
+    let(:name) { @musician.name }
+    let(:begun_in) { @musician.begun_in }
+    let(:description) { @musician.description }
+    let(:params) {
+      {
+        musician: {
+          name: name,
+          begun_in: begun_in,
+          description: description
+        }
+      }
+    }
+
+    before { @musician = create(:musician) }
+
+    context 'when valid parameters are submitted' do
+      let(:name) { "[UPDATE]#{@musician.name}" }
+
+      it 'updates the musician' do
+        expect {
+          patch "/musicians/#{@musician.id}", headers: @headers, params: params.to_json
+          @musician.reload
+        }.to change(@musician, :name)
+
+        expect(response.status).to eq 200
+        expected = {
+          musician: {
+            id: @musician.id,
+            name: @musician.name,
+            begun_in: @musician.begun_in,
+            description: @musician.description
+          }
+        }
+        expect(response.body).to be_json_as expected
+      end
+    end
+
+    context 'when invalid parameters are sumitted' do
+      let(:name) { '' }
+
+      it 'updates the musician' do
+        expect {
+          patch "/musicians/#{@musician.id}", headers: @headers, params: params.to_json
+          @musician.reload
+        }.not_to change(@musician, :name)
+
+        expect(response.status).to eq 422
+        expected = { errors: [String] }
+        expect(response.body).to be_json_as expected
+      end
+    end
+  end
 end
