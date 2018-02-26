@@ -27,6 +27,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'pg', '~> 0.21'
   gem 'pry-byebug'
+  gem 'rspec-json_matcher'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'selenium-webdriver'
