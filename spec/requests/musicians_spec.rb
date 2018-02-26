@@ -13,7 +13,7 @@ RSpec.describe 'Musicians API', type: :request do
   before do
     @headers = {
       ACCEPT: 'application/vnd.musicrit.v1+json',
-      CONTENT: 'application/json'
+      CONTENT_TYPE: 'application/json'
     }
   end
 
@@ -43,10 +43,60 @@ RSpec.describe 'Musicians API', type: :request do
     end
   end
 
+  describe 'POST /musicians' do
+    let(:attributes) { attributes_for(:musician) }
+    let(:name) { attributes[:name] }
+    let(:begun_in) { attributes[:begun_in] }
+    let(:description) { attributes[:description] }
+    let(:params) {
+      {
+        musician: {
+          name: name,
+          begun_in: begun_in,
+          description: description
+        }
+      }
+    }
+
+    context 'when valid parameters are submitted' do
+      it 'creates a musician' do
+        expect {
+          post '/musicians', headers: @headers, params: params.to_json
+        }.to change(Musician, :count).by(1)
+
+        expect(response.status).to eq 201
+        created = Musician.last
+        expected = {
+          musician: {
+            id: created.id,
+            name: created.name,
+            begun_in: created.begun_in,
+            description: created.description
+          }
+        }
+        expect(response.body).to be_json_as expected
+      end
+    end
+
+    context 'when invalid parameters are submitted' do
+      let(:name) { '' }
+
+      it 'creates no musicians' do
+        expect {
+          post '/musicians', headers: @headers, params: params.to_json
+        }.not_to change(Musician, :count)
+
+        expect(response.status).to eq 422
+        expected = { errors: [String] }
+        expect(response.body).to be_json_as expected
+      end
+    end
+  end
+
   describe 'GET /musicians/:id' do
     context 'when the musician exists' do
       before { @musician = create(:musician) }
-      fit 'returns the musician' do
+      it 'returns the musician' do
         get "/musicians/#{@musician.id}", headers: @headers
 
         expect(response.status).to eq 200

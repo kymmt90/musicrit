@@ -27,11 +27,23 @@ class MusiciansController < ApplicationController
 
   def create
     @musician = Musician.new(musician_params)
+
     if @musician.save
-      redirect_to @musician, notice: "#{@musician.name}を登録しました"
+      respond_to do |format|
+        format.html { redirect_to @musician, notice: "#{@musician.name}を登録しました" }
+        format.v1_json { render :show, formats: :json, status: :created }
+      end
     else
-      flash.now[:error] = '登録できませんでした'
-      render :new
+      respond_to do |format|
+        format.html {
+          flash.now[:error] = '登録できませんでした'
+          render :new
+        }
+
+        format.v1_json {
+          render json: { errors: @musician.errors.full_messages }, status: :unprocessable_entity
+        }
+      end
     end
   end
 
