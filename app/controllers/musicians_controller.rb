@@ -69,7 +69,10 @@ class MusiciansController < ApplicationController
   def destroy
     @musician.destroy!
 
-    redirect_to musicians_path, notice: "#{@musician.name}を削除しました"
+    respond_to do |format|
+      format.html { redirect_to musicians_path, notice: "#{@musician.name}を削除しました" }
+      format.v1_json { head :no_content }
+    end
   end
 
   private

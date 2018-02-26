@@ -166,4 +166,16 @@ RSpec.describe 'Musicians API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /musicians/:id' do
+    before { @musician = create(:musician) }
+
+    it 'destroys the musician' do
+      expect {
+        delete "/musicians/#{@musician.id}", headers: @headers
+      }.to change(Musician, :count).by(-1)
+
+      expect(response.status).to eq 204
+    end
+  end
 end
