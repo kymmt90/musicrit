@@ -94,8 +94,9 @@ RSpec.describe 'Musicians API', type: :request do
   end
 
   describe 'GET /musicians/:id' do
+    before { @musician = create(:musician) }
+
     context 'when the musician exists' do
-      before { @musician = create(:musician) }
       it 'returns the musician' do
         get "/musicians/#{@musician.id}", headers: @headers
 
@@ -108,6 +109,16 @@ RSpec.describe 'Musicians API', type: :request do
             description: @musician.description
           )
         }
+        expect(response.body).to be_json_as expected
+      end
+    end
+
+    context 'when the musician does not exist' do
+      it 'returns errors' do
+        get "/musicians/#{@musician.id.succ}", headers: @headers
+
+        expect(response.status).to eq 404
+        expected = { errors: ['Musician is not found'] }
         expect(response.body).to be_json_as expected
       end
     end
@@ -165,17 +176,44 @@ RSpec.describe 'Musicians API', type: :request do
         expect(response.body).to be_json_as expected
       end
     end
+
+    context 'when the musician does not exist' do
+      it 'returns errors' do
+        expect {
+          patch "/musicians/#{@musician.id.succ}", headers: @headers, params: params.to_json
+          @musician.reload
+        }.not_to change(@musician, :name)
+
+        expect(response.status).to eq 404
+        expected = { errors: ['Musician is not found'] }
+        expect(response.body).to be_json_as expected
+      end
+    end
   end
 
   describe 'DELETE /musicians/:id' do
     before { @musician = create(:musician) }
 
-    it 'destroys the musician' do
-      expect {
-        delete "/musicians/#{@musician.id}", headers: @headers
-      }.to change(Musician, :count).by(-1)
+    context 'when the musician exists' do
+      it 'destroys the musician' do
+        expect {
+          delete "/musicians/#{@musician.id}", headers: @headers
+        }.to change(Musician, :count).by(-1)
 
-      expect(response.status).to eq 204
+        expect(response.status).to eq 204
+      end
+    end
+
+    context 'when the musician does not exist' do
+      it 'returns errors' do
+        expect {
+          delete "/musicians/#{@musician.id.succ}", headers: @headers
+        }.not_to change(Musician, :count)
+
+        expect(response.status).to eq 404
+        expected = { errors: ['Musician is not found'] }
+        expect(response.body).to be_json_as expected
+      end
     end
   end
 end
